@@ -2292,7 +2292,7 @@ const Footer = ({ onNavigate }) => {
               <a
                 href="#competitions"
                 className="footer-nav-link"
-                onClick={(e) => { e.preventDefault(); onNavigate('competitions'); }}
+                onClick={(e) => { e.preventDefault(); onNavigate('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); setTimeout(() => { const el = document.getElementById('galleryx'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 100); }}
               >
                 Gallery
               </a>
@@ -2714,7 +2714,7 @@ export default function App() {
                   WEBSITE LAUNCHING IN 2026
                 </p>
                 <div>
-                  <button className="return-home-btn" onClick={() => navigate('competitions')}>
+                  <button className="return-home-btn" onClick={() => navigate('home')}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="19" y1="12" x2="5" y2="12"></line>
                       <polyline points="12 19 5 12 12 5"></polyline>
@@ -2746,7 +2746,7 @@ export default function App() {
                   WEBSITE LAUNCHING IN 2026
                 </p>
                 <div>
-                  <button className="return-home-btn" onClick={() => navigate('competitions')}>
+                  <button className="return-home-btn" onClick={() => navigate('home')}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="19" y1="12" x2="5" y2="12"></line>
                       <polyline points="12 19 5 12 12 5"></polyline>
@@ -2763,23 +2763,29 @@ export default function App() {
             ========================================================== */}
           {route === 'lectures' && (
             <section className="page-view active" aria-labelledby="lectures-title">
-              <div className="section-header-box">
-                <button
-                  className="breadcrumb-home-link"
-                  onClick={() => navigate('home')}
-                  title="Return to YUKTHI X'26 Home"
-                  aria-label="Return to Home"
-                >
-                  <span className="breadcrumb-arrow">←</span> Home
-                </button>
-                <div className="header-flex-row">
-                  <h1 id="lectures-title" className="page-main-title pp-fragment">LECTURES</h1>
+              <div className="grid-texture-overlay"></div>
+              <div className="status-hero">
+                <p className="status-tag poppins">YUKTHI X'26 / STATUS</p>
+                <div className="status-divider-line"></div>
+                <h1 id="lectures-title" className="status-title pp-fragment">
+                  LECTURES<br />
+                  COMING SOON
+                </h1>
+                <p className="status-description poppins">
+                  Lecture schedule and speaker lineup will be announced soon.
+                </p>
+                <p className="status-badge monocraft">
+                  WEBSITE LAUNCHING IN 2026
+                </p>
+                <div>
+                  <button className="return-home-btn" onClick={() => navigate('home')}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="19" y1="12" x2="5" y2="12"></line>
+                      <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Return to Home</span>
+                  </button>
                 </div>
-              </div>
-              <div className="events-grid">
-                {EVENTS_DATA.filter((e) => e.type === 'lectures').map((ev) => (
-                  <EventCard key={ev.id} event={ev} onSelect={setSelectedEvent} />
-                ))}
               </div>
             </section>
           )}

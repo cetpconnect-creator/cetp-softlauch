@@ -302,13 +302,14 @@ export default function GalaxyScene() {
         // ============================================================
         // 5. Animation Loop (Smooth Orbit Spin & Continuous Parallax)
         // ============================================================
-        const clock = new THREE.Clock();
+        const timer = new THREE.Timer();
         let animationFrameId;
 
         function animate() {
             animationFrameId = requestAnimationFrame(animate);
 
-            const elapsedTime = clock.getElapsedTime();
+            timer.update();
+            const elapsedTime = timer.getElapsed();
             const now = performance.now();
 
             // Smooth lerp for scroll position
