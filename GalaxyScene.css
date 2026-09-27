@@ -1,0 +1,110 @@
+:root {
+    --tathva-gold: #f4be6c;
+    --tathva-amber: #d9822b;
+    --tathva-dark: #04060a;
+    --tathva-core: #fff6e5;
+    --tathva-glow: rgba(244, 190, 108, 0.32);
+}
+
+.galaxy-container {
+    position: fixed !important;
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    pointer-events: none;
+    z-index: 0 !important;
+    overflow: hidden;
+    background-color: var(--tathva-dark);
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #ffffff;
+    user-select: none;
+    -webkit-user-select: none;
+    animation: galaxyFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes galaxyFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- Cosmic Background Layers --- */
+.cosmic-viewport {
+    position: fixed !important;
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    pointer-events: none;
+    z-index: 0 !important;
+    overflow: hidden;
+    background: #04060a;
+}
+
+.milky-way-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/milky_way_bg.jpg'), url('https://tathva.org/images/milky_way_bg.jpg');
+    background-size: cover;
+    background-position: center 45%;
+    opacity: 0.82;
+    filter: contrast(1.18) brightness(1.02);
+}
+
+.tathva-nebula-glow {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse 80% 65% at 50% 50%,
+        rgba(244, 190, 108, 0.28) 0%,
+        rgba(217, 130, 43, 0.16) 38%,
+        rgba(14, 20, 36, 0.45) 75%,
+        transparent 100%
+    );
+    mix-blend-mode: screen;
+}
+
+.constellation-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.vignette-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(3, 4, 8, 0.45) 90%, rgba(3, 4, 8, 0.75) 100%);
+    pointer-events: none;
+}
+
+/* Three.js Canvas Container (Pointer events none so buttons are directly clickable) */
+.webgl-mount {
+    position: fixed !important;
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 1 !important;
+    pointer-events: none;
+}
+
+.webgl-mount canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
