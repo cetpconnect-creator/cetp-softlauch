@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import './GalaxyScene.css';
 
 /**
  * Creates a soft glowing radial star texture to avoid square points.
