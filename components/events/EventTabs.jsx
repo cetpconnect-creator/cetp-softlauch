@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function EventTabs({ activeTab, onTabChange, tabs = [
   { id: 'tathva', label: "YUKTHI X'26" },
-  { id: 'pretathva', label: 'PRE-TATHVA' }
+  { id: 'pretathva', label: 'PRE-YUKTHI' }
 ] }) {
   const activeIndex = Math.max(0, tabs.findIndex((t) => t.id === activeTab));
   const tabWidthPct = 100 / tabs.length;

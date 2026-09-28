@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import SiteSwitcher from './SiteSwitcher';
 
-export default function Header({ onToggleMobileMenu, onShowToast }) {
+export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = 'https://vaaga.in' }) {
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
 
@@ -19,22 +20,22 @@ export default function Header({ onToggleMobileMenu, onShowToast }) {
     { label: 'Workshops', path: '/workshops' },
     { label: 'Competitions', path: '/competitions' },
     { label: 'Passes', path: '/passes' },
-    { label: 'Lectures', path: '/lectures' },
     { label: 'Accommodation', path: '/accommodation' }
   ];
 
   return (
     <header className={`header-nav ${isHome && !scrolled ? 'home-top-hidden' : 'visible'}`}>
       <div className="header-container">
-        <Link href="/" className="logo-pill" title="YUKTHI X'26 Home">
-          <img
-            src="/images/TATHVA25_LOGO_BLACK.png"
-            alt="YUKTHI X'26 Logo"
-            onError={(e) => {
-              e.currentTarget.src = 'https://tathva.org/images/TATHVA25_LOGO_BLACK.png';
-            }}
-          />
-        </Link>
+        {/* Apple Matte Design Switcher (Yukthi <-> Vaaga) */}
+        <SiteSwitcher
+          currentSite="yukthi"
+          vaagaUrl={vaagaUrl}
+          onSwitch={(site) => {
+            if (site === 'vaaga' && onShowToast) {
+              onShowToast('🚀 Switching to VAAGA website...');
+            }
+          }}
+        />
 
         <nav className="nav-pill-menu" aria-label="Main Navigation">
           {navItems.map((item) => {

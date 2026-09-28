@@ -6,17 +6,6 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="footer-inner">
         <div className="footer-top-section">
-          <Link href="/" title="YUKTHI X'26 Home">
-            <img
-              src="/images/TATHVA25_LOGO_BLACK.png"
-              alt="YUKTHI X'26 Logo"
-              className="footer-logo-img"
-              style={{ cursor: 'pointer' }}
-              onError={(e) => {
-                e.currentTarget.src = 'https://tathva.org/images/TATHVA25_LOGO_BLACK.png';
-              }}
-            />
-          </Link>
           <ul className="footer-nav-list">
             <li>
               <Link href="/competitions" className="footer-nav-link">
@@ -29,8 +18,8 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/lectures" className="footer-nav-link">
-                Lectures
+              <Link href="/passes" className="footer-nav-link">
+                Passes
               </Link>
             </li>
             <li>

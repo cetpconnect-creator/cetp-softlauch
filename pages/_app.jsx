@@ -40,13 +40,6 @@ export default function App({ Component, pageProps }) {
           name="description"
           content="Official website of YUKTHI X'26, the annual techno-management festival of NIT Calicut. Explore competitions, workshops, passes, and lectures."
         />
-        <link rel="icon" type="image/png" href="/favicon.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&display=swap"
-          rel="stylesheet"
-        />
       </Head>
 
       {/* Background Three.js 3D Golden Particle Galaxy for Home Page */}

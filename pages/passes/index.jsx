@@ -16,14 +16,13 @@ export default function PassesPage() {
           <div className="status-divider-line"></div>
           <h1 id="passes-title" className="status-title pp-fragment">
             PASSES<br />
-            COMING<br />
-            SOON
+            COMING SOON
           </h1>
           <p className="status-description poppins">
-            Passes are not on sale yet. Check back soon.
+            Official festival passes, workshop combo tickets, and student delegation packages will open for registration shortly.
           </p>
           <p className="status-badge monocraft">
-            WEBSITE LAUNCHING IN 2026
+            PASSES LIVE OCTOBER 2026
           </p>
           <div>
             <Link href="/" className="return-home-btn">

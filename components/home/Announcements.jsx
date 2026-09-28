@@ -106,29 +106,8 @@ export const ContactSection = ({ onToast }) => {
 };
 
 export default function Announcements({ onToast }) {
-  const announcementsList = [
-    { id: 1, tag: 'HOT', text: 'Workshops registration is now LIVE for Autonomous Driving, Cyber Forensics & more.' },
-    { id: 2, tag: 'NEW', text: 'RoboWars 8KG & 15KG arena entries are now open for teams.' },
-    { id: 3, tag: 'INFO', text: 'Pre-Tathva Battle of Bands tickets available soon.' }
-  ];
-
   return (
     <div className="home-announcements-wrapper">
-      <div className="announcements-bar-container">
-        <div className="announcements-badge">
-          <span className="live-pulse"></span>
-          <span>ANNOUNCEMENTS</span>
-        </div>
-        <div className="announcements-ticker">
-          {announcementsList.map((item) => (
-            <div key={item.id} className="announcement-item">
-              <span className={`announcement-tag ${item.tag.toLowerCase()}`}>{item.tag}</span>
-              <span className="announcement-text">{item.text}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <ContactSection onToast={onToast} />
     </div>
   );

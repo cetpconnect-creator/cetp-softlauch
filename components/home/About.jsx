@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CountdownTimer } from './Hero';
 
-const TECHKRITI_SUMMITS = [
+const YUKTHI_SUMMITS = [
   {
     id: 'tech-summit',
     index: '01',
@@ -62,7 +62,7 @@ const TECHKRITI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/e-conclave.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1000&q=80',
     category: 'VENTURE & STARTUPS',
-    route: '/lectures'
+    route: '/competitions'
   },
   {
     id: 'sustainability',
@@ -92,7 +92,7 @@ const TECHKRITI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/women-panel.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1000&q=80',
     category: 'WOMEN IN TECH',
-    route: '/lectures'
+    route: '/workshops'
   },
   {
     id: 'vision-360',
@@ -102,11 +102,11 @@ const TECHKRITI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/vision-360.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=80',
     category: 'POLICY & DIPLOMACY',
-    route: '/lectures'
+    route: '/competitions'
   }
 ];
 
-export const TechkritiSummitsDialShowcase = () => {
+export const YukthiSummitsDialShowcase = () => {
   const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
@@ -117,7 +117,7 @@ export const TechkritiSummitsDialShowcase = () => {
   const wheelCooldownRef = useRef(false);
   const touchStartY = useRef(0);
 
-  const currentSummit = TECHKRITI_SUMMITS[activeIndex];
+  const currentSummit = YUKTHI_SUMMITS[activeIndex];
 
   useEffect(() => {
     if (isHovered) return;
@@ -129,7 +129,7 @@ export const TechkritiSummitsDialShowcase = () => {
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
-          setActiveIndex((current) => (current + 1) % TECHKRITI_SUMMITS.length);
+          setActiveIndex((current) => (current + 1) % YUKTHI_SUMMITS.length);
           return 0;
         }
         return prev + step;
@@ -148,9 +148,9 @@ export const TechkritiSummitsDialShowcase = () => {
     }, 220);
 
     if (e.deltaY > 0) {
-      setActiveIndex((prev) => (prev + 1) % TECHKRITI_SUMMITS.length);
+      setActiveIndex((prev) => (prev + 1) % YUKTHI_SUMMITS.length);
     } else {
-      setActiveIndex((prev) => (prev - 1 + TECHKRITI_SUMMITS.length) % TECHKRITI_SUMMITS.length);
+      setActiveIndex((prev) => (prev - 1 + YUKTHI_SUMMITS.length) % YUKTHI_SUMMITS.length);
     }
     setProgress(0);
   }, []);
@@ -180,9 +180,9 @@ export const TechkritiSummitsDialShowcase = () => {
     const diff = touchStartY.current - touchEndY;
     if (Math.abs(diff) > 40) {
       if (diff > 0) {
-        setActiveIndex((prev) => (prev + 1) % TECHKRITI_SUMMITS.length);
+        setActiveIndex((prev) => (prev + 1) % YUKTHI_SUMMITS.length);
       } else {
-        setActiveIndex((prev) => (prev - 1 + TECHKRITI_SUMMITS.length) % TECHKRITI_SUMMITS.length);
+        setActiveIndex((prev) => (prev - 1 + YUKTHI_SUMMITS.length) % YUKTHI_SUMMITS.length);
       }
       setProgress(0);
     }
@@ -203,7 +203,7 @@ export const TechkritiSummitsDialShowcase = () => {
       }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      aria-label="Techkriti Summits Showcase"
+      aria-label="Yukthi X'26 Flagship Summits"
     >
       <div className="techkriti-ambient-glow-left" />
       <div className="techkriti-ambient-glow-right" />
@@ -286,7 +286,7 @@ export const TechkritiSummitsDialShowcase = () => {
                 transform: `translateY(-${activeIndex * 68 + 34}px)`
               }}
             >
-              {TECHKRITI_SUMMITS.map((summit, idx) => {
+              {YUKTHI_SUMMITS.map((summit, idx) => {
                 const isActive = idx === activeIndex;
                 const dist = Math.abs(idx - activeIndex);
                 const opacity = isActive ? 1 : dist === 1 ? 0.38 : dist === 2 ? 0.16 : 0.04;
@@ -348,7 +348,7 @@ export const TechkritiSummitsDialShowcase = () => {
               <div className="summit-card-meta">
                 <span className="summit-category-pill">{currentSummit.category}</span>
                 <span className="summit-index-counter">
-                  {currentSummit.index} / {TECHKRITI_SUMMITS.length.toString().padStart(2, '0')}
+                  {currentSummit.index} / {YUKTHI_SUMMITS.length.toString().padStart(2, '0')}
                 </span>
               </div>
 
@@ -378,7 +378,7 @@ export const TechkritiSummitsDialShowcase = () => {
 
       <div className="techkriti-controls-row">
         <div className="summit-dot-indicators" role="tablist" aria-label="Summit Selection">
-          {TECHKRITI_SUMMITS.map((summit, idx) => (
+          {YUKTHI_SUMMITS.map((summit, idx) => (
             <button
               key={summit.id}
               className={`summit-dot ${idx === activeIndex ? 'active' : ''}`}
@@ -813,21 +813,21 @@ function MobileGalleryCarousel({ items }) {
   );
 }
 
-export const TathvaGallerySpiral = () => {
+export const YukthiGallerySpiral = () => {
   return (
-    <div id="galleryx" className="tathva-gallery-section my-auto mb-14 bg-transparent relative z-10">
-      <div className="gallery-header-box flex justify-center items-center px-4 sm:px-8 lg:px-16 sm:py-12 relative">
-        <div className="gallery-header-glow-bg absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(244,190,108,0.1)_0%,_transparent_65%)] pointer-events-none -z-10" />
-        <p className="text-center max-w-3xl text-gray-200 plus-jakarta leading-relaxed tracking-wide font-light drop-shadow-md">
-          <span className="gallery-main-title bg-gradient-to-r pp-fragment from-white via-gray-200 to-white bg-clip-text text-transparent text-4xl tracking-wide sm:text-5xl block mb-6 sm:mb-10 uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
-            YUKTHI X'26 Gallery
-          </span>
-          <span className="gallery-subtitle inline-block text-white/90 font-light mb-5">
+    <div id="galleryx" className="tathva-gallery-section">
+      <div className="gallery-header-box">
+        <div className="gallery-header-glow-bg" />
+        <div className="gallery-header-content">
+          <h2 className="gallery-main-title pp-fragment">
+            YUKTHI X'26 GALLERY
+          </h2>
+          <p className="gallery-subtitle poppins">
             Scroll through the moments that define YUKTHI X'26 — step into the vibrant spirit of{' '}
-            <span className="font-medium text-white highlight">creativity</span> and{' '}
-            <span className="font-medium text-white highlight">unforgettable</span> memories.
-          </span>
-        </p>
+            <span className="highlight">creativity</span> and{' '}
+            <span className="highlight">unforgettable</span> memories.
+          </p>
+        </div>
       </div>
 
       <div className="gallery-spiral-stage-wrapper relative h-auto sm:h-[800px] w-full sm:overflow-hidden">
@@ -859,14 +859,14 @@ export default function About() {
   return (
     <div className="home-about-container">
       {/* Interactive Radar Dial Summits Showcase */}
-      <TechkritiSummitsDialShowcase />
+      <YukthiSummitsDialShowcase />
 
       {/* 3D Infinite Spiral Gallery */}
-      <TathvaGallerySpiral />
+      <YukthiGallerySpiral />
 
       {/* Countdown Timer */}
       <div className="gallery-downside-countdown">
-        <p className="hero-launch-label">WEBSITE LAUNCHING IN</p>
+        <p className="hero-launch-label">YUKTHI X'26 COMMENCES IN</p>
         <CountdownTimer />
       </div>
     </div>

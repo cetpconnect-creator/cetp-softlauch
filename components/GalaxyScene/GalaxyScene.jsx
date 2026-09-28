@@ -357,7 +357,7 @@ export default function GalaxyScene() {
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('scroll', handleScroll);
 
-            if (mount && renderer.domElement) {
+            if (mount && renderer.domElement && renderer.domElement.parentNode === mount) {
                 mount.removeChild(renderer.domElement);
             }
 

@@ -19,10 +19,10 @@ export default function AccommodationPage() {
             COMING SOON
           </h1>
           <p className="status-description poppins">
-            Accommodation details and bookings will be available soon.
+            Comfortable on-campus hostel accommodation and hospitality arrangements for participants and teams will open for reservations shortly.
           </p>
           <p className="status-badge monocraft">
-            WEBSITE LAUNCHING IN 2026
+            BOOKINGS OPEN OCTOBER 2026
           </p>
           <div>
             <Link href="/" className="return-home-btn">

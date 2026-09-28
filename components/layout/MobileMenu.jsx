@@ -1,15 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import SiteSwitcher from './SiteSwitcher';
 
-export default function MobileMenu({ isOpen, onClose }) {
+export default function MobileMenu({ isOpen, onClose, vaagaUrl = 'https://vaaga.in' }) {
   const router = useRouter();
 
   const navItems = [
     { label: 'WORKSHOPS', path: '/workshops' },
     { label: 'COMPETITIONS', path: '/competitions' },
     { label: 'PASSES', path: '/passes' },
-    { label: 'LECTURES', path: '/lectures' },
     { label: 'ACCOMMODATION', path: '/accommodation' }
   ];
 
@@ -17,11 +17,12 @@ export default function MobileMenu({ isOpen, onClose }) {
 
   return (
     <div className={`mobile-nav-drawer ${isOpen ? 'open' : ''}`}>
-      <div className="mobile-nav-header" style={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem' }}>
+      <div className="mobile-nav-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+        <SiteSwitcher vaagaUrl={vaagaUrl} />
         <button
           onClick={onClose}
           aria-label="Close menu"
-          style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+          style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>

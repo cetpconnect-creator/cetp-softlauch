@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    TATHVA '26 OFFICIAL CLONE STYLESHEET
    Accurate typography, glassmorphism, responsive grid, and animation effects
    ========================================================================== */
@@ -176,7 +176,161 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  position: relative;
 }
+
+@media (min-width: 768px) {
+  .header-container {
+    justify-content: center;
+  }
+}
+
+/* --- Apple Matte Design Site Switcher (Yukthi / Vaaga) --- */
+.site-switcher-wrapper {
+  pointer-events: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .site-switcher-wrapper {
+    position: absolute;
+    left: 0;
+  }
+}
+
+.apple-matte-switcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  background: rgba(18, 20, 26, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.4);
+  user-select: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.apple-matte-switcher:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 
+    0 12px 28px -4px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
+}
+
+/* Sliding frosted matte pill */
+.switcher-glider {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+  box-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+}
+
+.switcher-glider.glider-yukthi {
+  transform: translateX(0);
+}
+
+.switcher-glider.glider-vaaga {
+  transform: translateX(calc(100%));
+}
+
+/* Segment buttons */
+.switcher-tab {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 64px;
+  padding: 0.32rem 0.65rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 9999px;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.25s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .switcher-tab {
+    min-width: 78px;
+    padding: 0.38rem 0.9rem;
+    font-size: 0.75rem;
+  }
+}
+
+.switcher-tab:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.switcher-tab:active {
+  transform: scale(0.96);
+}
+
+.switcher-tab.is-active {
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Status indicator micro-dots */
+.tab-indicator {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dot-yukthi {
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.9);
+}
+
+.dot-vaaga {
+  background: #a855f7;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.9);
+  opacity: 0.6;
+}
+
+.switcher-tab.is-active .tab-indicator {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.external-arrow {
+  opacity: 0.5;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.switcher-tab:hover .external-arrow {
+  opacity: 0.9;
+  transform: translate(1px, -1px);
+}
+
 
 .logo-pill {
   pointer-events: auto;
@@ -270,6 +424,13 @@ body {
   border-radius: 9999px;
   padding: 0.35rem 0.5rem;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+@media (min-width: 768px) {
+  .nav-actions {
+    position: absolute;
+    right: 0;
+  }
 }
 
 .icon-btn {
@@ -2757,9 +2918,13 @@ body {
 .gallery-header-box {
   position: relative;
   text-align: center;
-  max-width: 52rem;
+  max-width: 56rem;
   margin: 0 auto;
-  padding: 2.5rem 1rem 1.5rem;
+  padding: 3rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .gallery-header-glow-bg {
@@ -2771,32 +2936,48 @@ body {
   mix-blend-mode: screen;
 }
 
+.gallery-header-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
 .gallery-main-title {
+  display: block;
+  width: 100%;
   font-family: 'PPFragment', Georgia, serif;
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2.5rem, 5.5vw, 4rem);
   font-weight: 500;
   text-transform: uppercase;
   color: #ffffff;
   letter-spacing: 0.05em;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(to right, #ffffff, #e5e7eb, #ffffff);
+  line-height: 1.15;
+  margin: 0 auto 1.5rem auto;
+  background: linear-gradient(to right, #ffffff, #f3f4f6, #ffffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+  text-align: center;
 }
 
 .gallery-subtitle {
-  font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
-  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
   font-weight: 300;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 48rem;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 44rem;
   margin: 0 auto;
+  text-align: center;
 }
 
 .gallery-subtitle .highlight {
-  color: #ffffff;
+  color: #f59e0b;
   font-weight: 500;
 }
 
@@ -3028,6 +3209,431 @@ body {
   transform: translateY(-2px) scale(1.02);
 }
 
+/* ==========================================================================
+   YUKTHI X'26 PASSES & TICKETING SYSTEM STYLES
+   ========================================================================== */
 
+.passes-container-page {
+  padding-bottom: 5rem;
+}
 
+.passes-hero-subtitle {
+  font-family: 'Poppins', sans-serif;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 1.05rem;
+  max-width: 650px;
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+
+.passes-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2rem 0 2.5rem;
+  flex-wrap: wrap;
+}
+
+.pass-filter-btn {
+  padding: 0.55rem 1.25rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.825rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pass-filter-btn:hover,
+.pass-filter-btn.active {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: #f59e0b;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+}
+
+.passes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.pass-card {
+  position: relative;
+  background: rgba(13, 18, 30, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2.25rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.pass-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(245, 158, 11, 0.45);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(245, 158, 11, 0.15);
+}
+
+.pass-card.featured {
+  border-color: #f59e0b;
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.1) 0%, rgba(13, 18, 30, 0.85) 100%);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(245, 158, 11, 0.22);
+}
+
+.pass-badge {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  font-family: 'Monocraft', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pass-badge.gold {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000000;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+}
+
+.pass-badge.silver {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.pass-badge.cyan {
+  background: rgba(34, 211, 238, 0.15);
+  border: 1px solid #22d3ee;
+  color: #22d3ee;
+}
+
+.pass-title {
+  font-family: 'PPFragment', Georgia, serif;
+  font-size: 1.85rem;
+  color: #ffffff;
+  margin-top: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.pass-desc {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  min-height: 2.6rem;
+}
+
+.pass-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pass-price-symbol {
+  font-family: 'PPFragment', Georgia, serif;
+  font-size: 1.5rem;
+  color: #f59e0b;
+}
+
+.pass-price-amount {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.pass-price-period {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.pass-perks-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.pass-perk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.4;
+}
+
+.pass-check-icon {
+  color: #22d3ee;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.pass-book-btn {
+  width: 100%;
+  padding: 0.9rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #000000;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pass-card.featured .pass-book-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #04060a;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+.pass-book-btn:hover {
+  background: var(--cyan-accent);
+  color: #000000;
+  box-shadow: 0 0 25px rgba(34, 211, 238, 0.6);
+  transform: translateY(-2px);
+}
+
+/* FAQ Box */
+.passes-faq-section {
+  background: rgba(13, 18, 30, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  margin-top: 2rem;
+}
+
+.passes-faq-title {
+  font-family: 'PPFragment', Georgia, serif;
+  font-size: 1.85rem;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.passes-faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.75rem;
+}
+
+.faq-item-card {
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+
+.faq-q {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.faq-a {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   YUKTHI X'26 GUEST LECTURES & KEYNOTES STYLES
+   ========================================================================== */
+
+.lectures-container-page {
+  padding-bottom: 5rem;
+}
+
+.lectures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.lecture-card {
+  position: relative;
+  background: rgba(13, 18, 30, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lecture-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(34, 211, 238, 0.4);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(34, 211, 238, 0.15);
+}
+
+.lecture-speaker-banner {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: #080c14;
+}
+
+.lecture-speaker-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lecture-card:hover .lecture-speaker-img {
+  transform: scale(1.06);
+}
+
+.lecture-tag-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  font-family: 'Monocraft', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #f59e0b;
+}
+
+.lecture-card-body {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.lecture-speaker-name {
+  font-family: 'PPFragment', Georgia, serif;
+  font-size: 1.45rem;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+}
+
+.lecture-speaker-role {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.825rem;
+  color: #22d3ee;
+  font-weight: 500;
+  margin-bottom: 0.85rem;
+}
+
+.lecture-topic-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.lecture-speaker-bio {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.825rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.lecture-meta-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.lecture-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.lecture-meta-icon {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.lecture-reserve-btn {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.825rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+}
+
+.lecture-reserve-btn:hover {
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: #000000;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.45);
+}
+
+.lecture-reserve-btn.reserved {
+  background: rgba(34, 211, 238, 0.2);
+  border-color: #22d3ee;
+  color: #22d3ee;
+}
 
