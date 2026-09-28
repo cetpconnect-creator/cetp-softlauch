@@ -407,7 +407,7 @@ const GALLERY_IMAGES = [
   { id: 4, src: '/images/gallery/mercedes_drift.jpg', alt: 'Vintage Mercedes-Benz Dirt Drift' },
   { id: 5, src: '/images/gallery/glive_singer.png', alt: 'G-Live Pro Stage Solo Vocal Concert' },
   { id: 6, src: '/images/gallery/isro_rocket.jpg', alt: 'ISRO LVM3 Rocket & Space Exhibition' },
-  { id: 7, src: '/images/gallery/dignitaries_stage.jpg', alt: 'Fest Inauguration & Dignitaries' },
+  { id: 7, src: '/images/gallery/dignitaries_stage.jpg', alt: 'College of Engineering & Technology Payyanur Welcome Ceremony' },
   { id: 8, src: '/images/gallery/concert_payyanur.png', alt: 'Live Pro Concert Performance' }
 ];
 

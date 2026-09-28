@@ -17,6 +17,14 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = 'ht
 
   const isHome = router.pathname === '/';
   const navItems = [
+    {
+      label: (
+        <>
+          TECH<sup style={{ fontSize: '0.75em', textTransform: 'lowercase', marginLeft: '1px' }}>x</sup>
+        </>
+      ),
+      path: '/tech'
+    },
     { label: 'Workshops', path: '/workshops' },
     { label: 'Competitions', path: '/competitions' },
     { label: 'Passes', path: '/passes' },
@@ -41,6 +49,7 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = 'ht
           {navItems.map((item) => {
             const isActive =
               router.pathname === item.path ||
+              (item.path === '/tech' && router.pathname.startsWith('/tech')) ||
               (item.path === '/workshops' && router.pathname.startsWith('/workshops')) ||
               (item.path === '/competitions' && router.pathname.startsWith('/competitions')) ||
               (item.path === '/events' && router.pathname.startsWith('/events'));

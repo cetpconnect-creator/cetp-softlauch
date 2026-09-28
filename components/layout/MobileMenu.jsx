@@ -7,6 +7,14 @@ export default function MobileMenu({ isOpen, onClose, vaagaUrl = 'https://vaaga.
   const router = useRouter();
 
   const navItems = [
+    {
+      label: (
+        <>
+          TECH<sup style={{ fontSize: '0.75em', textTransform: 'lowercase', marginLeft: '1px' }}>x</sup>
+        </>
+      ),
+      path: '/tech'
+    },
     { label: 'WORKSHOPS', path: '/workshops' },
     { label: 'COMPETITIONS', path: '/competitions' },
     { label: 'PASSES', path: '/passes' },
