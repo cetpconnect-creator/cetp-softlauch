@@ -6,7 +6,7 @@ export default function AccommodationPage() {
   return (
     <>
       <Head>
-        <title>Accommodation | YUKTHI X'26 - NIT Calicut</title>
+        <title>Accommodation | YUKTHI X'26</title>
       </Head>
 
       <section className="page-view active" aria-labelledby="accom-title">

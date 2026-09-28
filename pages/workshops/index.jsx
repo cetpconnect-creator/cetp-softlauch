@@ -6,7 +6,7 @@ export default function WorkshopsPage() {
   return (
     <>
       <Head>
-        <title>Workshops | YUKTHI X'26 - NIT Calicut</title>
+        <title>Workshops | YUKTHI X'26</title>
       </Head>
 
       <section className="page-view active" aria-labelledby="workshops-title">

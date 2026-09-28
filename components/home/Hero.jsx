@@ -43,7 +43,7 @@ export const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState({ days: '06', hours: '20', mins: '43', secs: '25' });
 
   useEffect(() => {
-    const target = new Date('2026-10-09T09:00:00+05:30').getTime();
+    const target = new Date('2026-10-12T09:00:00+05:30').getTime();
 
     const updateTimer = () => {
       const now = Date.now();
@@ -94,18 +94,6 @@ export const CountdownTimer = () => {
 export default function Hero({ onExplore }) {
   return (
     <section className="home-hero-section">
-      {/* Top Left YUKTHI X'26 Logo */}
-      <div className="hero-top-left-logo" title="YUKTHI X'26 Home">
-        <Link href="/">
-          <img
-            src="/images/TATHVA25_LOGO_BLACK.png"
-            alt="YUKTHI X'26 Logo"
-            onError={(e) => {
-              e.currentTarget.src = 'https://tathva.org/images/TATHVA25_LOGO_BLACK.png';
-            }}
-          />
-        </Link>
-      </div>
 
       {/* Year 2026 */}
       <p className="hero-year-text">2026</p>
@@ -114,7 +102,7 @@ export default function Hero({ onExplore }) {
       <HeroMainTitle text="YUKTHI X'26" />
 
       {/* Dates */}
-      <p className="hero-dates-text">13TH - 15TH OCTOBER</p>
+      <p className="hero-dates-text">12TH - 17TH OCTOBER</p>
     </section>
   );
 }

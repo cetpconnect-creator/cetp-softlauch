@@ -6,7 +6,7 @@ export default function PassesPage() {
   return (
     <>
       <Head>
-        <title>Passes | YUKTHI X'26 - NIT Calicut</title>
+        <title>Passes | YUKTHI X'26</title>
       </Head>
 
       <section className="page-view active" aria-labelledby="passes-title">

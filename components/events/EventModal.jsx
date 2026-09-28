@@ -42,7 +42,7 @@ export default function EventModal({ event, onClose, onRegister }) {
             {event.type === 'workshops' ? 'WORKSHOP' : 'COMPETITION'}
           </span>
           <h2 className="modal-title pp-fragment">{event.heading}</h2>
-          <p className="modal-tagline">{event.catchyPara || "Official YUKTHI X'26 Event at NIT Calicut"}</p>
+          <p className="modal-tagline">{event.catchyPara || "Official YUKTHI X'26 Event"}</p>
 
           <div className="modal-meta-grid">
             <div className="modal-meta-item">
@@ -57,7 +57,7 @@ export default function EventModal({ event, onClose, onRegister }) {
             </div>
             <div className="modal-meta-item" style={{ gridColumn: 'span 2' }}>
               <span className="modal-meta-label">Venue</span>
-              <span className="modal-meta-val">{event.venueName || 'NIT Calicut Main Campus'}</span>
+              <span className="modal-meta-val">{event.venueName || 'Main Campus'}</span>
             </div>
           </div>
 

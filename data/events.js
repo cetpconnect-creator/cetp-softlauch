@@ -14,7 +14,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/3a3c1037-3fd9-4717-8d40-eca95b2fbe77.webp",
     committee: "Workshop committee",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 23,
@@ -30,7 +30,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/c5da5741-b9b7-45aa-923b-9d60b4a2104c.webp",
     committee: "Workshop committee",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 24,
@@ -46,7 +46,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/9c61e2a8-16ef-42ac-ab1b-cdf1bb30b062.webp",
     committee: "Workshop committee",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 2,
@@ -62,7 +62,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/579bfa73-4c14-4c9b-a1e5-09aefd353441.webp",
     committee: "Workshop Committe",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 8,
@@ -78,7 +78,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/3929200e-91f0-461d-a3db-a085d74437fb.webp",
     committee: "Workshop Committee",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 3,
@@ -94,7 +94,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/e88d1e31-2283-4d3d-a75f-2f52a1ec5565.webp",
     committee: "Workshop committee",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 5,
@@ -110,7 +110,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/bd54731e-25a6-4a7f-8e14-63fea27cc320.webp",
     committee: "Workshop Committe",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 19,
@@ -126,7 +126,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/4bf1c894-b8d2-42bf-97f8-36d72fcfc8d8.webp",
     committee: "Workshop committee",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 18,
@@ -142,7 +142,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/c347d96c-8b81-48f0-b5dd-0ba1a7b55d89.webp",
     committee: "Workshop committee",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 20,
@@ -158,7 +158,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/00dbca7d-39a5-4e13-bb7f-97e9dc81efc3.webp",
     committee: "Workshop committee",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 21,
@@ -174,7 +174,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/db542787-3277-4b1d-9a96-8e7cb99199de.webp",
     committee: "Workshop Committe",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
   {
     id: 17,
@@ -190,7 +190,7 @@ export const EVENTS_DATA = [
     remotePicture: "https://cdn.tathva.org/events/05a2a161-e852-44ac-9600-dbbbb1fec395.webp",
     committee: "Workshop Committe",
     venueName: "East Campus Lecture Hall Complex (ECLC)",
-    venueLocation: "NIT Calicut"
+    venueLocation: ""
   },
 
   // --- COMPETITIONS (YUKTHI X'26 Official) ---
@@ -287,7 +287,7 @@ export const EVENTS_DATA = [
     picture: "/posters/event_13.webp",
     remotePicture: "https://cdn.tathva.org/events/067bc394-3448-41ec-8ea4-ab6c27b33eb9.webp",
     committee: "Program Committee",
-    venueName: "NIT Calicut Main Campus",
+    venueName: "Main Campus",
     venueLocation: "NITC"
   },
   {
@@ -303,7 +303,7 @@ export const EVENTS_DATA = [
     picture: "/posters/event_14.webp",
     remotePicture: "https://cdn.tathva.org/events/d5cb81ae-58ec-4b0a-bc94-7656c2f34acf.webp",
     committee: "Program Committee",
-    venueName: "NIT Calicut Main Campus",
+    venueName: "Main Campus",
     venueLocation: "NITC"
   },
   {
@@ -319,7 +319,7 @@ export const EVENTS_DATA = [
     picture: "/posters/event_16.webp",
     remotePicture: "https://cdn.tathva.org/events/a237170a-ff4b-4c31-8b0b-bf2d2c155d50.webp",
     committee: "Program Committe",
-    venueName: "NIT Calicut Main Campus",
+    venueName: "Main Campus",
     venueLocation: "NITC"
   },
 
@@ -363,7 +363,7 @@ export const EVENTS_DATA = [
     price: 0,
     published: true,
     ticketId: 9003,
-    description: "Cryptic clues hidden across NIT Calicut campus. Speed, wits, and collaboration are essential.",
+    description: "Cryptic clues hidden across campus. Speed, wits, and collaboration are essential.",
     catchyPara: "Decipher the enigmas across campus.",
     datetime: "2026-10-02T16:00:00+05:30",
     picture: "/posters/event_12.webp",

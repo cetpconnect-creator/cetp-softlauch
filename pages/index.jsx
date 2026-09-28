@@ -8,7 +8,7 @@ export default function HomePage({ onToast }) {
   return (
     <>
       <Head>
-        <title>YUKTHI X'26 | National Techno-Management Fest | NIT Calicut</title>
+        <title>YUKTHI X'26 | National Techno-Management Fest</title>
       </Head>
       <div className="home-page-view">
         <Hero />

@@ -6,7 +6,7 @@ export default function CompetitionsPage() {
   return (
     <>
       <Head>
-        <title>Competitions | YUKTHI X'26 - NIT Calicut</title>
+        <title>Competitions | YUKTHI X'26</title>
       </Head>
 
       <section className="page-view active" aria-labelledby="competitions-title">

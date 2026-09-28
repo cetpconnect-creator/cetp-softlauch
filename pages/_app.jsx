@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -6,8 +6,10 @@ import Header from '../components/layout/Header';
 import MobileMenu from '../components/layout/MobileMenu';
 import Footer from '../components/layout/Footer';
 import StarfieldCanvas from '../components/common/StarfieldCanvas';
+import IntroScene from '../components/intro/IntroScene';
 import '../styles/globals.css';
 import '../components/GalaxyScene/GalaxyScene.css';
+import '../components/intro/IntroScene.css';
 
 // Dynamically import GalaxyScene with ssr: false for Three.js client-side rendering
 const GalaxyScene = dynamic(() => import('../components/GalaxyScene/GalaxyScene'), {
@@ -22,6 +24,31 @@ export default function App({ Component, pageProps }) {
 
   const isHome = router.pathname === '/';
 
+  // Intro video: plays on the home page, once per browser session
+  const [introState, setIntroState] = useState('pending'); // pending | playing | done
+  const [justRevealed, setJustRevealed] = useState(false);
+
+  useEffect(() => {
+    if (introState !== 'pending') return;
+    let seen = false;
+    try { seen = sessionStorage.getItem('cetp-intro-seen') === '1'; } catch (e) {}
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Only the home page gets the intro; a direct visit to a subpage skips it
+    setIntroState(isHome && !seen && !reduced ? 'playing' : 'done');
+  }, [introState, isHome]);
+
+  useEffect(() => {
+    document.body.classList.toggle('intro-active', introState === 'playing' || (introState === 'pending' && isHome));
+    return () => document.body.classList.remove('intro-active');
+  }, [introState, isHome]);
+
+  const handleIntroDone = useCallback(() => {
+    try { sessionStorage.setItem('cetp-intro-seen', '1'); } catch (e) {}
+    setIntroState('done');
+    setJustRevealed(true);
+    setTimeout(() => setJustRevealed(false), 1600);
+  }, []);
+
   const showToast = (message) => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message }]);
@@ -31,16 +58,20 @@ export default function App({ Component, pageProps }) {
   };
 
   return (
-    <div className="site-wrapper">
+    <div className={`site-wrapper ${justRevealed ? 'intro-reveal' : ''}`}>
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>YUKTHI X'26 | National Techno-Management Fest</title>
         <meta
           name="description"
-          content="Official website of YUKTHI X'26, the annual techno-management festival of NIT Calicut. Explore competitions, workshops, passes, and lectures."
+          content="Official website of YUKTHI X'26, the annual techno-management festival. Explore competitions, workshops, passes, and lectures."
         />
       </Head>
+
+      {/* Cinematic intro (black cover while checking, then video) */}
+      {isHome && introState === 'pending' && <div className="intro-overlay" />}
+      {isHome && introState === 'playing' && <IntroScene onDone={handleIntroDone} />}
 
       {/* Background Three.js 3D Golden Particle Galaxy for Home Page */}
       {isHome && <GalaxyScene />}
@@ -65,6 +96,7 @@ export default function App({ Component, pageProps }) {
       <Header
         onToggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
         onShowToast={showToast}
+        vaagaUrl="http://localhost:3001"
       />
 
       {/* Mobile Menu Drawer */}

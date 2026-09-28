@@ -38,8 +38,8 @@ export default function EventDetailPage({ onToast }) {
   const dateStr = formatWorkshopDate(event.datetime);
   const timeStr = event.time || '9:00 am';
   const venueStr = event.venueName
-    ? `${event.venueName}, ${event.venueLocation || 'NIT Calicut'}`
-    : 'East Campus Lecture Hall Complex (ECLC), NIT Calicut';
+    ? `${event.venueName}${event.venueLocation ? ', ' + event.venueLocation : ''}`
+    : 'East Campus Lecture Hall Complex (ECLC)';
   const priceStr = event.price > 0 ? `₹${event.price}` : 'Free';
   const imgSrc = event.picture || `/posters/event_${event.id}.webp`;
 

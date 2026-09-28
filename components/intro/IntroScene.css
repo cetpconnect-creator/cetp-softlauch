@@ -1,0 +1,139 @@
+/* ===== Cinematic video intro ===== */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
+  overflow: hidden;
+  cursor: pointer;
+  transform-origin: 50% 55%;
+  will-change: transform, opacity, filter;
+}
+
+.intro-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 1.1s ease-out, transform 10s linear;
+}
+.intro-overlay.is-started .intro-video {
+  opacity: 1;
+  transform: scale(1); /* slow cinematic push-out while playing */
+}
+
+/* Letterbox bars slide in at the start, and open on exit */
+.intro-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 9vh;
+  background: #000;
+  z-index: 2;
+  transition: transform 1.2s cubic-bezier(0.77, 0, 0.18, 1);
+}
+.intro-bar-top { top: 0; transform: translateY(0); }
+.intro-bar-bottom { bottom: 0; transform: translateY(0); }
+.intro-overlay.is-exiting .intro-bar-top { transform: translateY(-100%); }
+.intro-overlay.is-exiting .intro-bar-bottom { transform: translateY(100%); }
+
+.intro-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.65) 100%);
+}
+
+/* Ember flash used during the exit */
+.intro-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 55%, rgba(255, 190, 90, 0.95), rgba(255, 90, 20, 0.55) 40%, transparent 75%);
+  mix-blend-mode: screen;
+}
+
+/* Controls */
+.intro-controls {
+  position: absolute;
+  z-index: 5;
+  right: clamp(14px, 3vw, 36px);
+  bottom: calc(9vh + 16px);
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  animation: introFadeIn 0.8s ease 1.2s forwards;
+}
+.intro-btn {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  padding: 8px 16px;
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.intro-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: translateY(-1px);
+}
+.intro-skip { text-transform: uppercase; }
+
+/* ---- Exit animation: push-in, blur, ember flash, fade ---- */
+.intro-overlay.is-exiting {
+  pointer-events: none;
+  animation: introExit 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.intro-overlay.is-exiting .intro-flash {
+  animation: introFlash 1.2s ease-out forwards;
+}
+.intro-overlay.is-exiting .intro-controls {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+@keyframes introExit {
+  0%   { transform: scale(1);    filter: blur(0)    brightness(1);   opacity: 1; }
+  45%  { transform: scale(1.12); filter: blur(2px)  brightness(1.5); opacity: 1; }
+  100% { transform: scale(1.35); filter: blur(14px) brightness(2);   opacity: 0; }
+}
+@keyframes introFlash {
+  0%   { opacity: 0; }
+  40%  { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+@keyframes introFadeIn { to { opacity: 1; } }
+
+/* ---- Main site reveal after the intro ---- */
+.site-wrapper.intro-reveal .main-content,
+.site-wrapper.intro-reveal .home-main-content {
+  animation: siteReveal 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes siteReveal {
+  0%   { opacity: 0; transform: scale(0.94) translateY(24px); filter: blur(8px); }
+  100% { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* Lock page scroll while the intro is showing */
+body.intro-active { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-video { transition: opacity 0.4s; transform: none; }
+  .intro-overlay.is-exiting { animation: introFadeOnly 0.4s forwards; }
+  .site-wrapper.intro-reveal .main-content,
+  .site-wrapper.intro-reveal .home-main-content { animation: none; }
+}
+@keyframes introFadeOnly { to { opacity: 0; } }

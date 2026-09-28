@@ -5,7 +5,7 @@ export default function EventCard({ event, onSelect }) {
 
   const isClosed = !event.published;
   const priceText = event.price > 0 ? `₹${event.price}` : 'Free';
-  const venueText = event.venueName || 'NIT Calicut Main Campus';
+  const venueText = event.venueName || 'Main Campus';
   const imgSrc = event.picture || '/posters/event_6.webp';
 
   return (

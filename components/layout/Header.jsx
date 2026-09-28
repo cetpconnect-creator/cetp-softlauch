@@ -92,8 +92,8 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = 'ht
             className="user-avatar-btn"
             onClick={() =>
               onShowToast
-                ? onShowToast('👤 Signed in as Dev Tester (NIT Calicut)')
-                : alert('👤 Signed in as Dev Tester (NIT Calicut)')
+                ? onShowToast('👤 Signed in as Dev Tester')
+                : alert('👤 Signed in as Dev Tester')
             }
             title="User Profile (Dev Tester)"
             aria-label="User profile"
