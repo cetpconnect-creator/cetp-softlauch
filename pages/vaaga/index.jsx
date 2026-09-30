@@ -3,7 +3,104 @@
 import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import SiteSwitcher from "../../components/layout/SiteSwitcher";
+
+/* =========================================================
+   SITE SWITCHER
+   Switch between YUKTHI (/) and VAAGA (/vaaga)
+   ========================================================= */
+function SiteSwitcher({
+  currentSite = "vaaga",
+  vaagaUrl = "/vaaga",
+  yukthiUrl = "/",
+  onSwitch,
+}) {
+  const router = typeof useRouter === "function" ? useRouter() : null;
+  const [activeSite, setActiveSite] = useState(currentSite);
+  const [isSwitching, setIsSwitching] = useState(false);
+
+  useEffect(() => {
+    if (!router || !router.pathname) return;
+    const site = router.pathname.startsWith("/vaaga") ? "vaaga" : "yukthi";
+    setActiveSite(site);
+  }, [router?.pathname]);
+
+  const handleSwitch = (site) => {
+    if (isSwitching) return;
+
+    // Detect if running standalone or within Yukthi
+    const isStandalone =
+      typeof window !== "undefined" &&
+      !router?.pathname?.startsWith("/vaaga") &&
+      !router?.pathname?.startsWith("/tech") &&
+      window.location.port !== "3000";
+
+    const target =
+      site === "vaaga"
+        ? vaagaUrl
+        : isStandalone
+          ? "http://localhost:3000"
+          : yukthiUrl;
+
+    if (router && router.asPath === target) return;
+
+    setActiveSite(site);
+    setIsSwitching(true);
+    onSwitch?.(site);
+
+    window.setTimeout(() => {
+      if (router && router.push && !target.startsWith("http")) {
+        router.push(target).finally(() => {
+          setIsSwitching(false);
+        });
+      } else {
+        window.location.href = target;
+      }
+    }, 220);
+  };
+
+  return (
+    <div
+      className="nav-switcher"
+      role="tablist"
+      aria-label="Switch between YUKTHI and VAAGA"
+    >
+      <div
+        className={`nav-switcher__glider ${activeSite === "vaaga"
+          ? "nav-switcher__glider--vaaga"
+          : "nav-switcher__glider--yukthi"
+          }`}
+        aria-hidden="true"
+      />
+
+      <button
+        type="button"
+        role="tab"
+        aria-selected={activeSite === "yukthi"}
+        className={`nav-switcher__item ${activeSite === "yukthi" ? "nav-switcher__item--active" : ""
+          }`}
+        onClick={() => handleSwitch("yukthi")}
+      >
+        <span className="nav-switcher__dot nav-switcher__dot--yukthi" />
+        YUKTHI
+      </button>
+
+      <button
+        type="button"
+        role="tab"
+        aria-selected={activeSite === "vaaga"}
+        className={`nav-switcher__item ${activeSite === "vaaga" ? "nav-switcher__item--active" : ""
+          }`}
+        onClick={() => handleSwitch("vaaga")}
+      >
+        <span className="nav-switcher__dot nav-switcher__dot--vaaga" />
+        VAAGA
+        <span className="switcher-arrow" aria-hidden="true">
+          ↗
+        </span>
+      </button>
+    </div>
+  );
+}
 
 /* =========================================================
    PRELOADER
@@ -183,8 +280,8 @@ function Hero() {
     portrait.src = "/images/theyyam-deity.png";
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = window.innerWidth <= 900 || window.matchMedia("(hover: none)").matches;
-    const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+    const isMobile = window.innerWidth <= 900;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const ASSEMBLE_MS = 2200;
 
     let particles = [];
@@ -220,8 +317,7 @@ function Hero() {
 
     const sampleImage = () => {
       const off = document.createElement("canvas");
-      // Scale down image sampling on mobile for optimal particle density and fast processing
-      const targetW = isMobile ? 110 : 340;
+      const targetW = 340;
       const scale = targetW / portrait.naturalWidth;
       const targetH = Math.round(portrait.naturalHeight * scale);
       off.width = targetW;
@@ -237,7 +333,7 @@ function Hero() {
       }
 
       let pts = [];
-      const step = isMobile ? 2 : 1;
+      const step = 1;
       for (let y = 0; y < targetH; y += step) {
         for (let x = 0; x < targetW; x += step) {
           const idx = (y * targetW + x) * 4;
@@ -246,17 +342,11 @@ function Hero() {
           const b = data[idx + 2];
           const a = data[idx + 3];
           const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-          if (a < 40 || lum < 14) continue;
-          const skipProb = lum < 45 ? (isMobile ? 0.70 : 0.35) : (isMobile ? 0.35 : 0.06);
+          if (a < 35 || lum < 12) continue;
+          const skipProb = lum < 45 ? 0.35 : 0.06;
           if (Math.random() < skipProb) continue;
           pts.push({ u: x / targetW, v: y / targetH, r, g, b, lum });
         }
-      }
-
-      // Cap maximum particle count on mobile to ~850 for butter-smooth 60-120fps
-      if (isMobile && pts.length > 850) {
-        const stride = Math.ceil(pts.length / 850);
-        pts = pts.filter((_, idx) => idx % stride === 0);
       }
 
       return pts;
@@ -267,17 +357,18 @@ function Hero() {
       if (!rawPts.length) rawPts = sampleImage();
       if (!rawPts.length) return;
 
-      const targetH = isMobile ? Math.min(fh * 0.90, fw * 1.65) : fh * 0.90;
+      const isMobile = window.innerWidth <= 900;
+      const targetH = isMobile ? Math.max(fh * 0.95, fw * 1.65) : fh * 0.90;
       const aspect = portrait.naturalWidth / (portrait.naturalHeight || 1);
       const targetW = targetH * aspect;
       // The lit face and crown of the deity in theyyam-deity.png is centered at u ≈ 0.573
       const offsetX = fw * 0.5 - targetW * 0.573;
-      const offsetY = fh * (isMobile ? 0.48 : 0.50) - targetH / 2;
+      const offsetY = fh * (isMobile ? 0.44 : 0.50) - targetH / 2;
 
       particles = rawPts.map((p) => {
         const px = offsetX + p.u * targetW;
         const py = offsetY + p.v * targetH;
-        const pSize = isMobile ? (Math.random() * 1.1 + 0.85) : (Math.random() * 1.05 + 0.45);
+        const pSize = isMobile ? (Math.random() * 1.35 + 0.85) : (Math.random() * 1.05 + 0.45);
         return {
           tx: px,
           ty: py,
@@ -414,34 +505,19 @@ function Hero() {
 
         // Deity particles
         const numParticles = particles.length;
-        if (isMobile) {
-          // Blit-based rendering on mobile for 5x to 10x higher GPU efficiency
-          for (let i = 0; i < numParticles; i++) {
-            const p = particles[i];
-            const cx = p.x + (p.tx - p.x) * ease;
-            const cy = p.y + (p.ty - p.y) * ease;
-            const wobbleX = Math.sin(tFrame * p.speed + p.phase) * p.drift * ease;
-            const wobbleY = Math.cos(tFrame * p.speed * 1.3 + p.phase) * p.drift * ease;
-            const flick = 0.6 + Math.sin(tFrame * p.twinkleSpeed + p.phase) * 0.4;
-            ctx.globalAlpha = Math.max(0.1, flick) * (0.4 + 0.6 * ease);
-            ctx.fillStyle = p.color;
-            ctx.fillRect(cx + wobbleX - p.halfSize, cy + wobbleY - p.halfSize, p.size, p.size);
-          }
-        } else {
-          // Path-based circular arcs for desktop
-          for (let i = 0; i < numParticles; i++) {
-            const p = particles[i];
-            const cx = p.x + (p.tx - p.x) * ease + pmx * ease;
-            const cy = p.y + (p.ty - p.y) * ease + pmy * ease;
-            const wobbleX = Math.sin(tFrame * p.speed + p.phase) * p.drift * ease;
-            const wobbleY = Math.cos(tFrame * p.speed * 1.3 + p.phase) * p.drift * ease;
-            const flick = 0.6 + Math.sin(tFrame * p.twinkleSpeed + p.phase) * 0.4;
-            ctx.globalAlpha = Math.max(0.05, flick) * (0.4 + 0.6 * ease);
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(cx + wobbleX, cy + wobbleY, p.size, 0, Math.PI * 2);
-            ctx.fill();
-          }
+        // Render glowing circular arcs for crisp, brilliant deity portrait across all devices
+        for (let i = 0; i < numParticles; i++) {
+          const p = particles[i];
+          const cx = p.x + (p.tx - p.x) * ease + pmx * ease;
+          const cy = p.y + (p.ty - p.y) * ease + pmy * ease;
+          const wobbleX = Math.sin(tFrame * p.speed + p.phase) * p.drift * ease;
+          const wobbleY = Math.cos(tFrame * p.speed * 1.3 + p.phase) * p.drift * ease;
+          const flick = 0.6 + Math.sin(tFrame * p.twinkleSpeed + p.phase) * 0.4;
+          ctx.globalAlpha = Math.max(0.12, flick) * (0.45 + 0.55 * ease);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(cx + wobbleX, cy + wobbleY, p.size, 0, Math.PI * 2);
+          ctx.fill();
         }
         ctx.globalAlpha = 1;
       }
@@ -557,8 +633,6 @@ function About() {
     };
     measureReel();
 
-    let settleTimer = null;
-
     const updateReel = (t = performance.now()) => {
       const sy = window.scrollY;
       const start = reelTop - vh * 0.5;
@@ -594,7 +668,7 @@ function About() {
       }
     };
     updateReel();
-    settleTimer = setTimeout(() => {
+    const settleTimer = setTimeout(() => {
       measureReel();
       updateReel();
     }, 450);
@@ -654,7 +728,7 @@ function About() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          video.play().catch(() => {});
+          video.play().catch(() => { });
         } else {
           video.pause();
         }
@@ -713,11 +787,11 @@ function About() {
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
-      video.play().catch(() => {});
+      video.play().catch(() => { });
       video.muted = false;
       setSoundOn(true);
     } else {
-      toggleSound({ stopPropagation: () => {} });
+      toggleSound({ stopPropagation: () => { } });
     }
   };
 
@@ -1482,12 +1556,6 @@ function ScrollReveal() {
    VAAGA PAGE EXPORT
    ========================================================= */
 export default function VaagaPage() {
-  useEffect(() => {
-    return () => {
-      document.body.classList.remove('is-loading', 'is-ready', 'is-intro-done', 'menu-open');
-    };
-  }, []);
-
   return (
     <div className="vaaga-page">
       <Head>
