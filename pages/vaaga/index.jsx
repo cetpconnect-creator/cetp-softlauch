@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -109,9 +109,17 @@ function Preloader() {
   const [count, setCount] = useState(0);
   const [isDone, setIsDone] = useState(false);
 
+  const finish = useCallback(() => {
+    setIsDone(true);
+    document.body.classList.remove("is-loading");
+    setTimeout(() => document.body.classList.add("is-ready"), 200);
+    setTimeout(() => document.body.classList.add("is-intro-done"), 200 + 1200);
+  }, []);
+
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const DUR = reduced ? 200 : 1500;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    const reduced = typeof window !== 'undefined' && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const DUR = reduced ? 200 : (isMobile ? 850 : 1400);
     const start = performance.now();
 
     document.body.classList.add("is-loading");
@@ -124,19 +132,21 @@ function Preloader() {
       if (p < 1) {
         requestAnimationFrame(tick);
       } else {
-        setIsDone(true);
-        document.body.classList.remove("is-loading");
-        setTimeout(() => document.body.classList.add("is-ready"), 350);
-        setTimeout(() => document.body.classList.add("is-intro-done"), 350 + 1600);
+        finish();
       }
     };
 
     const id = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(id);
-  }, []);
+  }, [finish]);
 
   return (
-    <div className={`loader ${isDone ? "is-done" : ""}`} aria-hidden="true">
+    <div
+      className={`loader ${isDone ? "is-done" : ""}`}
+      aria-hidden="true"
+      onClick={finish}
+      style={{ cursor: "pointer" }}
+    >
       <div className="loader__word">
         <span style={{ "--i": 0 }}>V</span>
         <span style={{ "--i": 1 }}>A</span>

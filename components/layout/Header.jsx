@@ -38,11 +38,6 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
         <SiteSwitcher
           currentSite="yukthi"
           vaagaUrl={vaagaUrl}
-          onSwitch={(site) => {
-            if (site === 'vaaga' && onShowToast) {
-              onShowToast('🚀 Switching to VAAGA website...');
-            }
-          }}
         />
 
         <nav className="nav-pill-menu" aria-label="Main Navigation">
