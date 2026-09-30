@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import SiteSwitcher from './SiteSwitcher';
 
-export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = 'https://vaaga.in' }) {
+export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/vaaga' }) {
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
 

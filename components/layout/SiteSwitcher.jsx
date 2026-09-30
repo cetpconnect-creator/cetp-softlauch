@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 /**
- * Apple Matte Design Site Switcher
- * Provides a tactile, frosted-matte segmented pill control to switch between YUKTHI and VAAGA sites.
+ * SiteSwitcher
+ * Seamless interactive capsule switcher between YUKTHI and VAAGA.
+ * Supports smooth sliding glider, reactive status glow, and tactile transitions.
  */
 export default function SiteSwitcher({
   currentSite = 'yukthi',
-  vaagaUrl = 'https://vaaga.in',
+  vaagaUrl = '/vaaga',
   yukthiUrl = '/',
   onSwitch
 }) {
@@ -15,83 +16,101 @@ export default function SiteSwitcher({
   const [activeSite, setActiveSite] = useState(currentSite);
   const [isSwitching, setIsSwitching] = useState(false);
 
+  useEffect(() => {
+    const isVaaga = router.pathname.startsWith('/vaaga');
+    setActiveSite(isVaaga ? 'vaaga' : 'yukthi');
+  }, [router.pathname]);
+
   const handleSwitch = (site) => {
-    if (site === activeSite) {
-      if (site === 'yukthi' && router.pathname !== '/') {
-        router.push('/');
+    if (isSwitching) return;
+
+    // Check if user is already on the selected site
+    const isAlreadyOnSite =
+      site === 'vaaga'
+        ? router.pathname.startsWith('/vaaga')
+        : (router.pathname === '/' || router.pathname === yukthiUrl);
+
+    if (isAlreadyOnSite) {
+      if (site === 'yukthi' && router.pathname !== '/' && router.pathname !== yukthiUrl) {
+        router.push(yukthiUrl);
       }
       return;
     }
 
+    const target = site === 'vaaga' ? vaagaUrl : yukthiUrl;
+
     setActiveSite(site);
     setIsSwitching(true);
+    onSwitch?.(site);
 
-    if (onSwitch) {
-      onSwitch(site);
-    }
-
-    if (site === 'vaaga') {
-      // Brief tactile delay so the smooth sliding pill animation completes before redirection
-      setTimeout(() => {
-        window.location.href = vaagaUrl;
-      }, 260);
-    } else {
-      setTimeout(() => {
-        window.location.href = yukthiUrl;
-      }, 260);
-    }
+    // Tactile delay allowing the smooth sliding glider animation to finish before page change
+    window.setTimeout(() => {
+      router.push(target).finally(() => {
+        setIsSwitching(false);
+      });
+    }, 180);
   };
 
   return (
     <div className="site-switcher-wrapper" role="region" aria-label="Fest Switcher">
-      <div className={`apple-matte-switcher ${isSwitching ? 'switching' : ''}`}>
-        {/* Animated sliding matte highlight pill */}
+      <div
+        className={`nav-switcher apple-matte-switcher ${isSwitching ? 'is-switching' : ''}`}
+        role="tablist"
+        aria-label="Switch between YUKTHI and VAAGA"
+      >
+        {/* Animated sliding highlight glider */}
         <div
-          className={`switcher-glider ${activeSite === 'vaaga' ? 'glider-vaaga' : 'glider-yukthi'}`}
+          className={`nav-switcher__glider switcher-glider ${
+            activeSite === 'vaaga'
+              ? 'nav-switcher__glider--vaaga glider-vaaga'
+              : 'nav-switcher__glider--yukthi glider-yukthi'
+          }`}
           aria-hidden="true"
         />
 
-        {/* Yukthi Tab */}
+        {/* YUKTHI Option */}
         <button
           type="button"
           role="tab"
           aria-selected={activeSite === 'yukthi'}
-          className={`switcher-tab ${activeSite === 'yukthi' ? 'is-active' : ''}`}
+          className={`nav-switcher__item switcher-tab ${
+            activeSite === 'yukthi' ? 'nav-switcher__item--active is-active' : ''
+          }`}
           onClick={() => handleSwitch('yukthi')}
           title="YUKTHI X'26 - National Techno-Management Fest"
         >
-          <span className="tab-indicator dot-yukthi" aria-hidden="true" />
+          <span
+            className="nav-switcher__dot nav-switcher__dot--yukthi tab-indicator dot-yukthi"
+            aria-hidden="true"
+          />
           <span className="tab-label">YUKTHI</span>
         </button>
 
-        {/* Vaaga Tab */}
+        {/* VAAGA Option */}
         <button
           type="button"
           role="tab"
           aria-selected={activeSite === 'vaaga'}
-          className={`switcher-tab ${activeSite === 'vaaga' ? 'is-active' : ''}`}
+          className={`nav-switcher__item switcher-tab ${
+            activeSite === 'vaaga' ? 'nav-switcher__item--active is-active' : ''
+          }`}
           onClick={() => handleSwitch('vaaga')}
-          title="Switch to VAAGA website"
+          title="VAAGA'26.2.0 - Arts Day"
         >
-          <span className="tab-indicator dot-vaaga" aria-hidden="true" />
+          <span
+            className="nav-switcher__dot nav-switcher__dot--vaaga tab-indicator dot-vaaga"
+            aria-hidden="true"
+          />
           <span className="tab-label">VAAGA</span>
-          <svg
-            className="external-arrow"
-            width="10"
-            height="10"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <span
+            className={`switcher-arrow external-arrow ${activeSite === 'vaaga' ? 'arrow-hidden' : ''}`}
             aria-hidden="true"
           >
-            <path d="M7 17L17 7" />
-            <path d="M7 7h10v10" />
-          </svg>
+            ↗
+          </span>
         </button>
       </div>
     </div>
   );
 }
+

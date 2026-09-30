@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import SiteSwitcher from './SiteSwitcher';
 
-export default function MobileMenu({ isOpen, onClose, vaagaUrl = 'https://vaaga.in' }) {
+export default function MobileMenu({ isOpen, onClose, vaagaUrl = '/vaaga' }) {
   const router = useRouter();
 
   const navItems = [
@@ -26,7 +26,7 @@ export default function MobileMenu({ isOpen, onClose, vaagaUrl = 'https://vaaga.
   return (
     <div className={`mobile-nav-drawer ${isOpen ? 'open' : ''}`}>
       <div className="mobile-nav-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-        <SiteSwitcher vaagaUrl={vaagaUrl} />
+        <SiteSwitcher vaagaUrl={vaagaUrl} onSwitch={onClose} />
         <button
           onClick={onClose}
           aria-label="Close menu"
