@@ -32,25 +32,15 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
   ];
 
   return (
-    <header className={`header-nav ${isHome && !scrolled ? 'home-top-hidden' : 'visible'}`}>
+    <header className="header-nav visible">
       <div className="header-container">
-        {/* Apple Matte Design Switcher (Yukthi <-> Vaaga) */}
-        <SiteSwitcher
-          currentSite="yukthi"
-          vaagaUrl={vaagaUrl}
-        />
-
-        {/* Dedicated Mobile TECHx Button (Always visible and centered on phone screens) */}
-        <Link
-          href="/tech"
-          className={`header-mobile-techx ${router.pathname.startsWith('/tech') ? 'active' : ''}`}
-          aria-label="TECHx Event"
-        >
-          <span className="mobile-techx-dot" />
-          <span className="mobile-techx-label">
-            TECH<sup className="mobile-techx-sup">x</sup>
-          </span>
-        </Link>
+        {/* Apple Matte Design Switcher (Yukthi <-> Vaaga) - Visible on desktop, moves to Hamburger Menu on mobile */}
+        <div className="site-switcher-desktop-wrapper">
+          <SiteSwitcher
+            currentSite="yukthi"
+            vaagaUrl={vaagaUrl}
+          />
+        </div>
 
         <nav className="nav-pill-menu" aria-label="Main Navigation">
           {navItems.map((item) => {
@@ -73,9 +63,10 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
           })}
         </nav>
 
+        {/* Header Actions Pill: Desktop has Bell + Divider + Profile. Mobile keeps Bell + Hamburger Menu */}
         <div className="nav-actions">
           <button
-            className="icon-btn"
+            className="icon-btn header-bell-btn"
             onClick={() =>
               onShowToast
                 ? onShowToast("🔔 YUKTHI X'26 Registrations are LIVE! Grab passes now.")
@@ -102,10 +93,11 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
             </span>
           </button>
 
-          <div className="nav-divider"></div>
+          <div className="nav-divider desktop-only-divider"></div>
 
+          {/* Desktop User Avatar (Moves to Hamburger Menu in mobile view) */}
           <button
-            className="user-avatar-btn"
+            className="user-avatar-btn desktop-only-avatar"
             onClick={() =>
               onShowToast
                 ? onShowToast('👤 Signed in as Dev Tester')
@@ -129,26 +121,25 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
             </svg>
           </button>
 
-          <div className="nav-divider mobile-divider"></div>
-
+          {/* Mobile Hamburger Menu Button (Matching Screenshot 2 circle pill) */}
           <button
             className="mobile-menu-btn"
             onClick={onToggleMobileMenu}
             aria-label="Toggle mobile menu"
           >
             <svg
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
+              <line x1="3.5" y1="7" x2="20.5" y2="7"></line>
+              <line x1="3.5" y1="12" x2="20.5" y2="12"></line>
+              <line x1="3.5" y1="17" x2="20.5" y2="17"></line>
             </svg>
           </button>
         </div>

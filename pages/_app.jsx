@@ -164,6 +164,7 @@ export default function App({ Component, pageProps }) {
           <MobileMenu
             isOpen={mobileMenuOpen}
             onClose={handleMobileClose}
+            onShowToast={showToast}
             vaagaUrl="/vaaga"
           />
         </>
