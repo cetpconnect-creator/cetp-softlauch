@@ -11,9 +11,11 @@ export default function MobileMenu({ isOpen, onClose, vaagaUrl = '/vaaga' }) {
       label: (
         <>
           TECH<sup style={{ fontSize: '0.75em', textTransform: 'lowercase', marginLeft: '1px' }}>x</sup>
+          <span className="mobile-nav-featured-badge">FEATURED</span>
         </>
       ),
-      path: '/tech'
+      path: '/tech',
+      featured: true
     },
     { label: 'WORKSHOPS', path: '/workshops' },
     { label: 'COMPETITIONS', path: '/competitions' },
@@ -38,19 +40,21 @@ export default function MobileMenu({ isOpen, onClose, vaagaUrl = '/vaaga' }) {
           </svg>
         </button>
       </div>
-      {navItems.map((item) => {
-        const isActive = router.pathname === item.path;
-        return (
-          <Link
-            key={item.path}
-            href={item.path}
-            className={`mobile-nav-item ${isActive ? 'active' : ''}`}
-            onClick={onClose}
-          >
-            {item.label}
-          </Link>
-        );
-      })}
+      <div className="mobile-nav-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', padding: '1rem 0' }}>
+        {navItems.map((item) => {
+          const isActive = router.pathname === item.path || (item.path === '/tech' && router.pathname.startsWith('/tech'));
+          return (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={`mobile-nav-item ${isActive ? 'active' : ''} ${item.featured ? 'mobile-nav-item--featured' : ''}`}
+              onClick={onClose}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }

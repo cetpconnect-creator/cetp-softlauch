@@ -40,6 +40,18 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
           vaagaUrl={vaagaUrl}
         />
 
+        {/* Dedicated Mobile TECHx Button (Always visible and centered on phone screens) */}
+        <Link
+          href="/tech"
+          className={`header-mobile-techx ${router.pathname.startsWith('/tech') ? 'active' : ''}`}
+          aria-label="TECHx Event"
+        >
+          <span className="mobile-techx-dot" />
+          <span className="mobile-techx-label">
+            TECH<sup className="mobile-techx-sup">x</sup>
+          </span>
+        </Link>
+
         <nav className="nav-pill-menu" aria-label="Main Navigation">
           {navItems.map((item) => {
             const isActive =
@@ -116,6 +128,8 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </button>
+
+          <div className="nav-divider mobile-divider"></div>
 
           <button
             className="mobile-menu-btn"
