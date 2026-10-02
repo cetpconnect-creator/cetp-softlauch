@@ -22,6 +22,14 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      { source: '/workshops', destination: '/#workshops', permanent: false },
+      { source: '/competitions', destination: '/#competitions', permanent: false },
+      { source: '/passes', destination: '/#passes', permanent: false },
+      { source: '/accommodation', destination: '/#accommodation', permanent: false },
+    ];
+  },
 };
 
 module.exports = nextConfig;
