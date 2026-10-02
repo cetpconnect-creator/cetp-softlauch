@@ -859,8 +859,7 @@ export default function About() {
   return (
     <div className="home-about-container">
       {/* Countdown Timer (Replaced Summits Dial Showcase) */}
-      <div className="gallery-downside-countdown" style={{ margin: '3.5rem auto 2.5rem', textAlign: 'center' }}>
-        <p className="hero-launch-label">YUKTHI X'26 COMMENCES IN</p>
+      <div className="gallery-downside-countdown" style={{ margin: '2.5rem auto 2rem', textAlign: 'center' }}>
         <CountdownTimer />
       </div>
 
