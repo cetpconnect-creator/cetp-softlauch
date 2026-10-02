@@ -155,6 +155,22 @@ nav.topbar.scrolled {
   transform: scale(1.06);
 }
 
+.nav-brand-img {
+  display: block;
+  height: clamp(30px, 2.8vw, 38px);
+  width: auto;
+  max-width: 170px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px rgba(229, 9, 20, 0.45));
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), filter 0.25s ease;
+  user-select: none;
+}
+
+.nav-brand:hover .nav-brand-img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 20px rgba(229, 9, 20, 0.75));
+}
+
 .nav-brand-title {
   font-family: 'Orbitron', 'Manrope', sans-serif;
   font-size: 1.35rem;
@@ -1277,6 +1293,10 @@ nav.topbar.scrolled {
   }
   .nav-brand-title { font-size: 1.15rem; letter-spacing: 1.5px; }
   .nav-brand-logo { width: 24px; height: 34px; }
+  .nav-brand-img {
+    height: clamp(24px, 6.5vw, 32px);
+    max-width: clamp(95px, 28vw, 130px);
+  }
   .nav-links, .btn-pill-nav { display: none; }
   .hamburger { 
     display: flex; 

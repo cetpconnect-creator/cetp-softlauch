@@ -34,12 +34,24 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
   return (
     <header className="header-nav visible">
       <div className="header-container">
-        {/* Apple Matte Design Switcher (Yukthi <-> Vaaga) - Visible on desktop, moves to Hamburger Menu on mobile */}
-        <div className="site-switcher-desktop-wrapper">
-          <SiteSwitcher
-            currentSite="yukthi"
-            vaagaUrl={vaagaUrl}
-          />
+        {/* Brand Section: Official 3D Fest Logo + Desktop Switcher */}
+        <div className="header-brand-section">
+          <Link href="/" className="header-logo-link" title="YUKTHI '26 - Home">
+            <img
+              src="/images/yukthi26-logo.png"
+              alt="YUKTHI '26 Official Logo"
+              className="header-logo-img"
+              loading="eager"
+            />
+          </Link>
+
+          {/* Apple Matte Design Switcher (Yukthi <-> Vaaga) - Visible on desktop, moves to Hamburger Menu on mobile */}
+          <div className="site-switcher-desktop-wrapper">
+            <SiteSwitcher
+              currentSite="yukthi"
+              vaagaUrl={vaagaUrl}
+            />
+          </div>
         </div>
 
         <nav className="nav-pill-menu" aria-label="Main Navigation">

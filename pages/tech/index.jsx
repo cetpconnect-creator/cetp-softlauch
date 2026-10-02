@@ -302,20 +302,12 @@ export default function TechPage() {
       <nav className={`topbar ${scrolled ? 'scrolled' : ''}`} id="navbar">
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
           <a href="#hero" onClick={scrollTo('hero')} className="nav-brand" aria-label="TECH X Home">
-            <svg className="nav-brand-logo" viewBox="0 0 31.5 48.5" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <linearGradient id="brandGrad" x1="8" y1="0" x2="34.1" y2="28.9" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="#ff2e3d" />
-                  <stop offset=".35" stopColor="#e50914" />
-                  <stop offset=".70" stopColor="#99040c" />
-                  <stop offset="1" stopColor="#550005" />
-                </linearGradient>
-              </defs>
-              <path d="M21.5 0 L21.5 19.5 L31.5 19.5 L31.5 29 L10 48.5 L10 28.5 L0.5 28.5 L0.5 18.5 Z" fill="url(#brandGrad)" />
-              <rect x="0.5" y="18.5" width="9" height="10" fill="#fdfdfd" />
-              <rect x="22" y="19.5" width="9.5" height="9.5" fill="#fdfdfd" />
-            </svg>
-            <span className="nav-brand-title">TECH X</span>
+            <img
+              src="/images/techx-logo.png"
+              alt="TECHX"
+              className="nav-brand-img"
+              loading="eager"
+            />
           </a>
 
           {/* Quick link back to Yukthi X'26 */}
@@ -693,13 +685,13 @@ export default function TechPage() {
       <footer>
         <div className="footer-grid">
           <div className="footer-brand">
-            <a href="#hero" onClick={scrollTo('hero')} className="nav-brand">
-              <svg className="nav-brand-logo" viewBox="0 0 31.5 48.5" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M21.5 0 L21.5 19.5 L31.5 19.5 L31.5 29 L10 48.5 L10 28.5 L0.5 28.5 L0.5 18.5 Z" fill="#e50914" />
-                <rect x="0.5" y="18.5" width="9" height="10" fill="#fdfdfd" />
-                <rect x="22" y="19.5" width="9.5" height="9.5" fill="#fdfdfd" />
-              </svg>
-              <span className="nav-brand-title">TECH X</span>
+            <a href="#hero" onClick={scrollTo('hero')} className="nav-brand" aria-label="TECH X Home">
+              <img
+                src="/images/techx-logo.png"
+                alt="TECHX"
+                className="nav-brand-img"
+                loading="lazy"
+              />
             </a>
             <p>The unified AI infrastructure platform engineered for maximum throughput, sub-10ms latency, and enterprise reliability.</p>
           </div>
