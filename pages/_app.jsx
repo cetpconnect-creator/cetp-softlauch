@@ -6,11 +6,9 @@ import Header from '../components/layout/Header';
 import MobileMenu from '../components/layout/MobileMenu';
 import Footer from '../components/layout/Footer';
 import StarfieldCanvas from '../components/common/StarfieldCanvas';
-import IntroScene from '../components/intro/IntroScene';
 
 import '../styles/globals.css';
 import '../components/GalaxyScene/GalaxyScene.css';
-import '../components/intro/IntroScene.css';
 import '../styles/techx.css';
 import '../styles/vaaga.css';
 
@@ -30,57 +28,11 @@ export default function App({ Component, pageProps }) {
   const isTech = router.pathname.startsWith('/tech');
   const isVaaga = router.pathname.startsWith('/vaaga');
 
-  const [introState, setIntroState] = useState('pending');
-  const [justRevealed, setJustRevealed] = useState(false);
-
-  useEffect(() => {
-    if (introState !== 'pending') return;
-
-    let seen = false;
-
-    try {
-      seen = sessionStorage.getItem('cetp-intro-seen') === '1';
-    } catch (e) { }
-
-    const reduced =
-      window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    setIntroState(
-      isHome && !seen && !reduced
-        ? 'playing'
-        : 'done'
-    );
-  }, [introState, isHome]);
-
-  useEffect(() => {
-    document.body.classList.toggle(
-      'intro-active',
-      introState === 'playing' ||
-      (introState === 'pending' && isHome)
-    );
-
-    return () => document.body.classList.remove('intro-active');
-  }, [introState, isHome]);
-
   useEffect(() => {
     // Always close Yukthi mobile menu when moving to another page.
     setMobileMenuOpen(false);
     document.body.classList.remove('menu-open');
   }, [router.asPath]);
-
-  const handleIntroDone = useCallback(() => {
-    try {
-      sessionStorage.setItem('cetp-intro-seen', '1');
-    } catch (e) { }
-
-    setIntroState('done');
-    setJustRevealed(true);
-
-    setTimeout(() => {
-      setJustRevealed(false);
-    }, 1600);
-  }, []);
 
   const showToast = (message) => {
     const id = Date.now();
@@ -104,8 +56,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <div
-      className={`site-wrapper ${justRevealed ? 'intro-reveal' : ''
-        } ${isVaaga ? 'is-vaaga-route' : ''}`}
+      className={`site-wrapper ${isVaaga ? 'is-vaaga-route' : ''}`}
     >
       <Head>
         <meta charSet="UTF-8" />
@@ -120,17 +71,6 @@ export default function App({ Component, pageProps }) {
             : "YUKTHI X'26 | National Techno-Management Fest"}
         </title>
       </Head>
-
-      {/* YUKTHI intro only */}
-      {isHome &&
-        introState === 'pending' && (
-          <div className="intro-overlay" />
-        )}
-
-      {isHome &&
-        introState === 'playing' && (
-          <IntroScene onDone={handleIntroDone} />
-        )}
 
       {/* YUKTHI galaxy only */}
       {isHome && <GalaxyScene />}
