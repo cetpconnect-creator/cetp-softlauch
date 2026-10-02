@@ -1,25 +1,40 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 export default function AccommodationPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace('/#accommodation');
-  }, [router]);
-
   return (
     <>
       <Head>
         <title>Accommodation | YUKTHI X'26</title>
       </Head>
-      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '2rem' }}>
-        <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-          Loading Accommodation... If you are not redirected, <Link href="/#accommodation" style={{ color: '#06b6d4' }}>click here</Link>.
-        </p>
-      </div>
+
+      <section className="page-view active" aria-labelledby="accom-title">
+        <div className="grid-texture-overlay"></div>
+        <div className="status-hero">
+          <p className="status-tag poppins">YUKTHI X'26 / STATUS</p>
+          <div className="status-divider-line"></div>
+          <h1 id="accom-title" className="status-title pp-fragment">
+            ACCOMMODATION<br />
+            COMING SOON
+          </h1>
+          <p className="status-description poppins">
+            Comfortable on-campus hostel accommodation and hospitality arrangements for participants and teams will open for reservations shortly.
+          </p>
+          <p className="status-badge monocraft">
+            BOOKINGS OPEN OCTOBER 2026
+          </p>
+          <div>
+            <Link href="/" className="return-home-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              <span>Return to Home</span>
+            </Link>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

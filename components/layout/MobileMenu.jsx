@@ -6,7 +6,6 @@ import SiteSwitcher from './SiteSwitcher';
 export default function MobileMenu({ isOpen, onClose, onShowToast, vaagaUrl = '/vaaga' }) {
   const router = useRouter();
 
-  const isYukthi = router.pathname === '/' || router.pathname === '/yukthi';
   const navItems = [
     {
       label: (
@@ -18,10 +17,10 @@ export default function MobileMenu({ isOpen, onClose, onShowToast, vaagaUrl = '/
       path: '/tech',
       featured: true
     },
-    { label: 'WORKSHOPS', path: isYukthi ? '#workshops' : '/#workshops', sectionId: 'workshops' },
-    { label: 'COMPETITIONS', path: isYukthi ? '#competitions' : '/#competitions', sectionId: 'competitions' },
-    { label: 'PASSES', path: isYukthi ? '#passes' : '/#passes', sectionId: 'passes' },
-    { label: 'ACCOMMODATION', path: isYukthi ? '#accommodation' : '/#accommodation', sectionId: 'accommodation' }
+    { label: 'WORKSHOPS', path: '/workshops' },
+    { label: 'COMPETITIONS', path: '/competitions' },
+    { label: 'PASSES', path: '/passes' },
+    { label: 'ACCOMMODATION', path: '/accommodation' }
   ];
 
   if (!isOpen) return null;
@@ -74,17 +73,7 @@ export default function MobileMenu({ isOpen, onClose, onShowToast, vaagaUrl = '/
                 className={`mobile-nav-item ${isActive ? 'active' : ''} ${
                   item.featured ? 'mobile-nav-item--featured' : ''
                 }`}
-                onClick={(e) => {
-                  onClose();
-                  if (isYukthi && item.sectionId) {
-                    e.preventDefault();
-                    const el = document.getElementById(item.sectionId);
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      window.history.pushState(null, '', `#${item.sectionId}`);
-                    }
-                  }
-                }}
+                onClick={onClose}
               >
                 {item.label}
               </Link>
