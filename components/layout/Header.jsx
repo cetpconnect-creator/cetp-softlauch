@@ -15,7 +15,7 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isHome = router.pathname === '/';
+  const isYukthi = router.pathname === '/' || router.pathname === '/yukthi';
   const navItems = [
     {
       label: (
@@ -23,13 +23,25 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
           TECH<sup style={{ fontSize: '0.75em', textTransform: 'lowercase', marginLeft: '1px' }}>x</sup>
         </>
       ),
-      path: '/tech'
+      path: '/tech',
+      isExternal: true
     },
-    { label: 'Workshops', path: '/workshops' },
-    { label: 'Competitions', path: '/competitions' },
-    { label: 'Passes', path: '/passes' },
-    { label: 'Accommodation', path: '/accommodation' }
+    { label: 'Workshops', path: isYukthi ? '#workshops' : '/#workshops', sectionId: 'workshops' },
+    { label: 'Competitions', path: isYukthi ? '#competitions' : '/#competitions', sectionId: 'competitions' },
+    { label: 'Passes', path: isYukthi ? '#passes' : '/#passes', sectionId: 'passes' },
+    { label: 'Accommodation', path: isYukthi ? '#accommodation' : '/#accommodation', sectionId: 'accommodation' }
   ];
+
+  const handleNavClick = (item) => (e) => {
+    if (isYukthi && item.sectionId) {
+      e.preventDefault();
+      const el = document.getElementById(item.sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.history.pushState(null, '', `#${item.sectionId}`);
+      }
+    }
+  };
 
   return (
     <header className="header-nav visible">
@@ -58,15 +70,13 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
           {navItems.map((item) => {
             const isActive =
               router.pathname === item.path ||
-              (item.path === '/tech' && router.pathname.startsWith('/tech')) ||
-              (item.path === '/workshops' && router.pathname.startsWith('/workshops')) ||
-              (item.path === '/competitions' && router.pathname.startsWith('/competitions')) ||
-              (item.path === '/events' && router.pathname.startsWith('/events'));
+              (item.path === '/tech' && router.pathname.startsWith('/tech'));
 
             return (
               <Link
                 key={item.path}
                 href={item.path}
+                onClick={handleNavClick(item)}
                 className={`nav-link ${isActive ? 'active' : ''}`}
               >
                 {item.label}

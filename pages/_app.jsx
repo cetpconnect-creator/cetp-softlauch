@@ -13,6 +13,7 @@ import '../components/GalaxyScene/GalaxyScene.css';
 import '../components/intro/IntroScene.css';
 import '../styles/techx.css';
 import '../styles/vaaga.css';
+import '../styles/yukthi.css';
 
 const GalaxyScene = dynamic(
   () => import('../components/GalaxyScene/GalaxyScene'),
@@ -26,7 +27,7 @@ export default function App({ Component, pageProps }) {
   const [isLowPower, setIsLowPower] = useState(false);
   const [toasts, setToasts] = useState([]);
 
-  const isHome = router.pathname === '/';
+  const isHome = router.pathname === '/' || router.pathname === '/yukthi';
   const isTech = router.pathname.startsWith('/tech');
   const isVaaga = router.pathname.startsWith('/vaaga');
 
