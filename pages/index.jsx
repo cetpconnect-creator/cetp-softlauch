@@ -1,6 +1,20 @@
 import React from 'react';
-import YukthiPage from './yukthi';
+import Head from 'next/head';
+import Hero from '../components/home/Hero';
+import About from '../components/home/About';
+import Announcements from '../components/home/Announcements';
 
 export default function HomePage({ onToast }) {
-  return <YukthiPage onToast={onToast} />;
+  return (
+    <>
+      <Head>
+        <title>YUKTHI X'26 | National Techno-Management Fest</title>
+      </Head>
+      <div className="home-page-view">
+        <Hero />
+        <About />
+        <Announcements onToast={onToast} />
+      </div>
+    </>
+  );
 }

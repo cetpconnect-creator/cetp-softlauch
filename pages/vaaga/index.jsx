@@ -119,7 +119,7 @@ function Preloader() {
   useEffect(() => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
     const reduced = typeof window !== 'undefined' && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const DUR = reduced ? 150 : (isMobile ? 650 : 1050);
+    const DUR = reduced ? 200 : (isMobile ? 850 : 1400);
     const start = performance.now();
 
     document.body.classList.add("is-loading");
@@ -325,24 +325,9 @@ function Hero() {
       }
     };
 
-    let cachedBgGrad = null;
-    const updateBgGradient = () => {
-      if (!fw || !fh) return;
-      cachedBgGrad = ctx.createRadialGradient(
-        fw * 0.5,
-        fh * 0.5,
-        10,
-        fw * 0.5,
-        fh * 0.5,
-        Math.max(fw, fh) * 0.6
-      );
-      cachedBgGrad.addColorStop(0, "rgba(45, 15, 10, 0.35)");
-      cachedBgGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
-    };
-
     const sampleImage = () => {
       const off = document.createElement("canvas");
-      const targetW = isMobile ? 260 : 340;
+      const targetW = 340;
       const scale = targetW / portrait.naturalWidth;
       const targetH = Math.round(portrait.naturalHeight * scale);
       off.width = targetW;
@@ -358,7 +343,7 @@ function Hero() {
       }
 
       let pts = [];
-      const step = isMobile ? 2 : 1;
+      const step = 1;
       for (let y = 0; y < targetH; y += step) {
         for (let x = 0; x < targetW; x += step) {
           const idx = (y * targetW + x) * 4;
@@ -368,7 +353,7 @@ function Hero() {
           const a = data[idx + 3];
           const lum = 0.299 * r + 0.587 * g + 0.114 * b;
           if (a < 35 || lum < 12) continue;
-          const skipProb = isMobile ? (lum < 50 ? 0.45 : 0.18) : (lum < 45 ? 0.35 : 0.06);
+          const skipProb = lum < 45 ? 0.35 : 0.06;
           if (Math.random() < skipProb) continue;
           pts.push({ u: x / targetW, v: y / targetH, r, g, b, lum });
         }
@@ -411,7 +396,6 @@ function Hero() {
       });
 
       makeStars();
-      updateBgGradient();
       assembleStart = performance.now();
     };
 
@@ -500,11 +484,19 @@ function Hero() {
 
         ctx.clearRect(0, 0, fw, fh);
 
-        // Pre-cached radial background warmth (zero allocation in loop)
-        if (cachedBgGrad) {
-          ctx.fillStyle = cachedBgGrad;
-          ctx.fillRect(0, 0, fw, fh);
-        }
+        // Radial background warmth
+        const grad = ctx.createRadialGradient(
+          fw * 0.5,
+          fh * 0.5,
+          10,
+          fw * 0.5,
+          fh * 0.5,
+          Math.max(fw, fh) * 0.6
+        );
+        grad.addColorStop(0, "rgba(45, 15, 10, 0.35)");
+        grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, fw, fh);
 
         // Batch render stars with single draw path
         ctx.fillStyle = "rgba(255, 230, 200, 0.7)";
@@ -523,6 +515,7 @@ function Hero() {
 
         // Deity particles
         const numParticles = particles.length;
+        // Render glowing circular arcs for crisp, brilliant deity portrait across all devices
         for (let i = 0; i < numParticles; i++) {
           const p = particles[i];
           const cx = p.x + (p.tx - p.x) * ease + pmx * ease;
@@ -532,13 +525,9 @@ function Hero() {
           const flick = 0.6 + Math.sin(tFrame * p.twinkleSpeed + p.phase) * 0.4;
           ctx.globalAlpha = Math.max(0.12, flick) * (0.45 + 0.55 * ease);
           ctx.fillStyle = p.color;
-          if (isMobile) {
-            ctx.fillRect(cx + wobbleX - p.halfSize, cy + wobbleY - p.halfSize, p.size, p.size);
-          } else {
-            ctx.beginPath();
-            ctx.arc(cx + wobbleX, cy + wobbleY, p.size, 0, Math.PI * 2);
-            ctx.fill();
-          }
+          ctx.beginPath();
+          ctx.arc(cx + wobbleX, cy + wobbleY, p.size, 0, Math.PI * 2);
+          ctx.fill();
         }
         ctx.globalAlpha = 1;
       }
