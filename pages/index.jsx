@@ -2,9 +2,8 @@ import React from 'react';
 import Head from 'next/head';
 import Hero from '../components/home/Hero';
 import About from '../components/home/About';
-import Announcements from '../components/home/Announcements';
 
-export default function HomePage({ onToast }) {
+export default function HomePage() {
   return (
     <>
       <Head>
@@ -13,7 +12,6 @@ export default function HomePage({ onToast }) {
       <div className="home-page-view">
         <Hero />
         <About />
-        <Announcements onToast={onToast} />
       </div>
     </>
   );
