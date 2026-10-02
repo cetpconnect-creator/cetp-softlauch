@@ -858,17 +858,14 @@ export const YukthiGallerySpiral = () => {
 export default function About() {
   return (
     <div className="home-about-container">
-      {/* Interactive Radar Dial Summits Showcase */}
-      <YukthiSummitsDialShowcase />
-
-      {/* 3D Infinite Spiral Gallery */}
-      <YukthiGallerySpiral />
-
-      {/* Countdown Timer */}
-      <div className="gallery-downside-countdown">
+      {/* Countdown Timer (Replaced Summits Dial Showcase) */}
+      <div className="gallery-downside-countdown" style={{ margin: '3.5rem auto 2.5rem', textAlign: 'center' }}>
         <p className="hero-launch-label">YUKTHI X'26 COMMENCES IN</p>
         <CountdownTimer />
       </div>
+
+      {/* 3D Infinite Spiral Gallery */}
+      <YukthiGallerySpiral />
     </div>
   );
 }
