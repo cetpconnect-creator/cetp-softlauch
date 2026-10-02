@@ -351,18 +351,18 @@ export default function YukthiPage({ onToast }) {
 
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <a
-                href="#summits"
+                href="#workshops"
                 className="pass-book-btn"
                 style={{ width: 'auto', padding: '0.85rem 2rem', background: '#22d3ee', color: '#04060a' }}
               >
-                Explore Summits <i>↓</i>
+                Explore Workshops <i>↓</i>
               </a>
               <a
-                href="#workshops"
+                href="#competitions"
                 className="pass-book-btn"
                 style={{ width: 'auto', padding: '0.85rem 2rem', background: 'rgba(255, 255, 255, 0.1)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)' }}
               >
-                Workshops &amp; Hackathons
+                Competitions &amp; Hackathons
               </a>
               <a
                 href="#passes"
@@ -376,61 +376,30 @@ export default function YukthiPage({ onToast }) {
         </section>
 
         {/* =================================================================
-            2. FLAGSHIP SUMMITS & CONCLAVES SECTION
+            2. LAUNCH COUNTDOWN SECTION (Replaced Summits Section)
             ================================================================= */}
-        <section id="summits" className="techkriti-summits-section" aria-label="Yukthi X'26 Flagship Summits">
-          <div className="section-header-wrap">
-            <span className="section-category-tag">FLAGSHIP SESSIONS</span>
-            <h2 className="section-headline">
-              Keynote Summits &amp; <em>Conclaves</em>
-            </h2>
-            <p className="section-description">
-              Gathering pioneering researchers, industry engineering leaders, and deep-tech founders across four specialized domain summits.
-            </p>
-          </div>
-
-          <div className="summits-grid">
-            {SUMMITS_DATA.map((summit) => (
-              <article key={summit.id} className="summit-card">
-                <div>
-                  <div className="summit-badge" style={{ color: summit.color, borderColor: `${summit.color}40`, background: `${summit.color}15` }}>
-                    {summit.badge}
-                  </div>
-                  <h3 className="summit-title">{summit.title}</h3>
-                  <p className="summit-desc">{summit.desc}</p>
-                </div>
-
-                <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                  <p style={{ fontFamily: 'Monocraft, monospace', fontSize: '0.7rem', color: summit.color, marginBottom: '0.6rem', textTransform: 'uppercase' }}>
-                    KEY HIGHLIGHTS:
-                  </p>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                    {summit.topics.map((t, idx) => (
-                      <li key={idx} style={{ fontFamily: 'Poppins, sans-serif', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.75)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: summit.color }} />
-                        {t}
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedWorkshop({
-                        heading: summit.title,
-                        subheading: summit.desc,
-                        price: 0,
-                        datetime: 'October 12-14, 2026',
-                        venueName: 'Main Audi Keynote Arena'
-                      });
-                    }}
-                    className="event-cta-btn"
-                    style={{ width: '100%', marginTop: '1.25rem', textAlign: 'center' }}
-                  >
-                    Reserve Seat
-                  </button>
-                </div>
-              </article>
-            ))}
+        <section id="countdown-banner" className="techkriti-summits-section" aria-label="Yukthi X'26 Launch Countdown" style={{ textAlign: 'center', padding: '3rem 1.5rem 2rem' }}>
+          <p className="hero-launch-label">YUKTHI X'26 COMMENCES IN</p>
+          <div className="hero-countdown-box">
+            <div className="countdown-block">
+              <span className="countdown-digits monocraft">{countdown.days}</span>
+              <span className="countdown-unit">DAYS</span>
+            </div>
+            <span className="countdown-sep monocraft">:</span>
+            <div className="countdown-block">
+              <span className="countdown-digits monocraft">{countdown.hours}</span>
+              <span className="countdown-unit">HOURS</span>
+            </div>
+            <span className="countdown-sep monocraft">:</span>
+            <div className="countdown-block">
+              <span className="countdown-digits monocraft">{countdown.mins}</span>
+              <span className="countdown-unit">MINS</span>
+            </div>
+            <span className="countdown-sep monocraft">:</span>
+            <div className="countdown-block">
+              <span className="countdown-digits monocraft">{countdown.secs}</span>
+              <span className="countdown-unit">SECS</span>
+            </div>
           </div>
         </section>
 
