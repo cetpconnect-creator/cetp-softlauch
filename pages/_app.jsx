@@ -11,6 +11,7 @@ import '../styles/globals.css';
 import '../components/GalaxyScene/GalaxyScene.css';
 import '../styles/techx.css';
 import '../styles/vaaga.css';
+import '../styles/yukthi.css';
 
 const GalaxyScene = dynamic(
   () => import('../components/GalaxyScene/GalaxyScene'),
@@ -27,6 +28,7 @@ export default function App({ Component, pageProps }) {
   const isHome = router.pathname === '/';
   const isTech = router.pathname.startsWith('/tech');
   const isVaaga = router.pathname.startsWith('/vaaga');
+  const isYukthi = router.pathname.startsWith('/yukthi');
 
   useEffect(() => {
     // Always close Yukthi mobile menu when moving to another page.
@@ -68,6 +70,8 @@ export default function App({ Component, pageProps }) {
         <title>
           {isVaaga
             ? "VAAGA'26.2.0 | Arts Day"
+            : isYukthi
+            ? "YUKTHI X'26 | National Techno-Management Conclave"
             : "YUKTHI X'26 | National Techno-Management Fest"}
         </title>
       </Head>
@@ -76,7 +80,7 @@ export default function App({ Component, pageProps }) {
       {isHome && <GalaxyScene />}
 
       {/* Other YUKTHI subpages only */}
-      {!isHome && !isTech && !isVaaga && (
+      {!isHome && !isTech && !isVaaga && !isYukthi && (
         <>
           <img
             src="/images/milky_way_bg.jpg"
@@ -91,7 +95,7 @@ export default function App({ Component, pageProps }) {
       )}
 
       {/* YUKTHI shared Header only */}
-      {!isTech && !isVaaga && (
+      {!isTech && !isVaaga && !isYukthi && (
         <>
           <Header
             onToggleMobileMenu={() =>
@@ -115,6 +119,7 @@ export default function App({ Component, pageProps }) {
         className={`main-content ${isHome ? 'home-main-content' : ''
           } ${isTech ? 'tech-main-content' : ''
           } ${isVaaga ? 'vaaga-main-content' : ''
+          } ${isYukthi ? 'yukthi-main-content' : ''
           }`}
       >
         <div
@@ -124,11 +129,14 @@ export default function App({ Component, pageProps }) {
               ? 'tech-transition-wrapper'
               : isVaaga
               ? 'vaaga-transition-wrapper'
+              : isYukthi
+              ? 'yukthi-transition-wrapper'
               : 'page-transition-wrapper'
           }
         >
           <Component
             {...pageProps}
+            showToast={showToast}
             onToast={showToast}
             isLowPower={isLowPower}
           />
@@ -136,10 +144,10 @@ export default function App({ Component, pageProps }) {
       </main>
 
       {/* YUKTHI footer only */}
-      {!isTech && !isVaaga && <Footer />}
+      {!isTech && !isVaaga && !isYukthi && <Footer />}
 
       {/* YUKTHI floating power button only */}
-      {!isTech && !isVaaga && (
+      {!isTech && !isVaaga && !isYukthi && (
         <button
           id="low-power-btn"
           className={`floating-power-btn ${isLowPower ? 'active' : ''
