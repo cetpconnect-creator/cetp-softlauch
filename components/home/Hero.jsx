@@ -103,6 +103,22 @@ export default function Hero({ onExplore }) {
 
       {/* Dates */}
       <p className="hero-dates-text">13TH - 17TH OCTOBER</p>
+
+      {/* Primary Action Buttons: Dark Transparent Glass + Subtle Galaxy Visible + Thin Cyan/Gold Glowing Border */}
+      <div className="hero-glass-actions">
+        <a
+          href="#summits"
+          className="hero-glass-btn hero-glass-btn--cyan"
+        >
+          EXPLORE SUMMITS
+        </a>
+        <a
+          href="#galleryx"
+          className="hero-glass-btn hero-glass-btn--gold"
+        >
+          VIEW GALLERY
+        </a>
+      </div>
     </section>
   );
 }

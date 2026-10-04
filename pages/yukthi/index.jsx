@@ -680,32 +680,17 @@ export function Hero({ onExplore, onShowToast }) {
             {/* Festival Dates */}
             <p className="hero-dates-text">13TH - 17TH OCTOBER</p>
 
-            {/* Primary Action Buttons */}
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1.25rem', flexWrap: 'wrap' }}>
+            {/* Primary Action Buttons: Dark Transparent Glass + Subtle Galaxy Visible + Thin Cyan/Gold Glowing Border */}
+            <div className="hero-glass-actions">
                 <a
                     href="#summits"
-                    className="btn btn-primary"
-                    style={{
-                        padding: '0.75rem 2rem',
-                        borderRadius: '9999px',
-                        background: 'var(--color-primary, #06b6d4)',
-                        color: '#000',
-                        fontWeight: '700',
-                        letterSpacing: '0.05em'
-                    }}
+                    className="hero-glass-btn hero-glass-btn--cyan"
                 >
                     EXPLORE SUMMITS
                 </a>
                 <a
                     href="#galleryx"
-                    className="btn btn-outline"
-                    style={{
-                        padding: '0.75rem 2rem',
-                        borderRadius: '9999px',
-                        border: '1px solid rgba(255,255,255,0.25)',
-                        color: '#fff',
-                        fontWeight: '600'
-                    }}
+                    className="hero-glass-btn hero-glass-btn--gold"
                 >
                     VIEW GALLERY
                 </a>
