@@ -12,7 +12,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/tech-summit.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80',
     category: 'DISRUPTIVE INNOVATION',
-    route: '/workshops'
+    route: '/tech'
   },
   {
     id: 'ai-summit',
@@ -22,7 +22,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/ai-summit.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1000&q=80',
     category: 'MACHINE LEARNING & GENAI',
-    route: '/competitions'
+    route: '/tech'
   },
   {
     id: 'rakshakriti',
@@ -32,7 +32,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/rakshakriti.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80',
     category: 'DEFENSE & AEROSPACE',
-    route: '/workshops'
+    route: '/tech'
   },
   {
     id: 'medtech',
@@ -42,7 +42,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/medtech.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=1000&q=80',
     category: 'BIOMEDICAL ENGINEERING',
-    route: '/competitions'
+    route: '/tech'
   },
   {
     id: 'space',
@@ -52,7 +52,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/space.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1000&q=80',
     category: 'ASTRONOMY & ROCKETRY',
-    route: '/workshops'
+    route: '/tech'
   },
   {
     id: 'e-conclave',
@@ -62,7 +62,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/e-conclave.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1000&q=80',
     category: 'VENTURE & STARTUPS',
-    route: '/competitions'
+    route: '/tech'
   },
   {
     id: 'sustainability',
@@ -72,7 +72,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/sustainability.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1000&q=80',
     category: 'CLEANTECH & CLIMATE',
-    route: '/workshops'
+    route: '/tech'
   },
   {
     id: 'industry-4-0',
@@ -82,7 +82,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/industry-4-0.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1000&q=80',
     category: 'SMART AUTOMATION',
-    route: '/competitions'
+    route: '/tech'
   },
   {
     id: 'women-panel',
@@ -92,7 +92,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/women-panel.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1000&q=80',
     category: 'WOMEN IN TECH',
-    route: '/workshops'
+    route: '/tech'
   },
   {
     id: 'vision-360',
@@ -102,7 +102,7 @@ const YUKTHI_SUMMITS = [
     image: 'https://2026.techkriti.org/images/summits/vision-360.webp',
     fallbackImage: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=80',
     category: 'POLICY & DIPLOMACY',
-    route: '/competitions'
+    route: '/tech'
   }
 ];
 

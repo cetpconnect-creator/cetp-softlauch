@@ -102,7 +102,7 @@ export default function Hero({ onExplore }) {
       <HeroMainTitle text="YUKTHI X'26" />
 
       {/* Dates */}
-      <p className="hero-dates-text">12TH - 17TH OCTOBER</p>
+      <p className="hero-dates-text">13TH - 17TH OCTOBER</p>
     </section>
   );
 }

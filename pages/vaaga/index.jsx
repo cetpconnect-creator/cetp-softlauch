@@ -234,8 +234,12 @@ function Navbar() {
   return (
     <>
       <header className={`nav ${isScrolled ? "is-scrolled" : ""} ${isHidden ? "is-hidden" : ""}`}>
-        <a href="#home" className="nav__logo" onClick={closeMenu}>
-          VAAGA&apos;26.2.0
+        <a href="#home" className="nav__logo" onClick={closeMenu} aria-label="VAAGA'26.2.0">
+          <img
+            src="/images/vaaga-logo.png"
+            alt="VAAGA'26.2.0"
+            className="nav__logo-img"
+          />
         </a>
         <nav className="nav__links">
           <a href="#home" className={activeSection === "home" ? "is-active" : ""}>Home</a>
@@ -259,6 +263,17 @@ function Navbar() {
       </header>
 
       <div className="menu" style={{ clipPath: menuOpen ? "inset(0 0 0 0)" : "inset(0 0 100% 0)" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+          <img
+            src="/images/vaaga-logo.png"
+            alt="VAAGA'26.2.0"
+            style={{
+              height: "80px",
+              width: "auto",
+              filter: "contrast(1.12) brightness(1.08) drop-shadow(0 0 10px rgba(245, 158, 11, 0.5)) drop-shadow(0 0 22px rgba(234, 179, 8, 0.35))"
+            }}
+          />
+        </div>
         <div className="menu__switcher-wrap">
           <SiteSwitcher currentSite="vaaga" onSwitch={closeMenu} />
         </div>
@@ -1315,6 +1330,7 @@ export default function VaagaPage() {
           content="VAAGA&apos;26.2.0 is the official Arts Day of College of Engineering Payyanur (CETP), a day of dance, music, theatre and art rooted in Kerala's culture."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/images/vaaga-logo.png" />
       </Head>
 
       <Preloader />

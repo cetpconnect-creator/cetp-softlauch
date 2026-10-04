@@ -16,11 +16,7 @@ export default function MobileMenu({ isOpen, onClose, onShowToast, vaagaUrl = '/
       ),
       path: '/tech',
       featured: true
-    },
-    { label: 'WORKSHOPS', path: '/workshops' },
-    { label: 'COMPETITIONS', path: '/competitions' },
-    { label: 'PASSES', path: '/passes' },
-    { label: 'ACCOMMODATION', path: '/accommodation' }
+    }
   ];
 
   if (!isOpen) return null;

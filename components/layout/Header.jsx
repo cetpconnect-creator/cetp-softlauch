@@ -24,11 +24,7 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
         </>
       ),
       path: '/tech'
-    },
-    { label: 'Workshops', path: '/workshops' },
-    { label: 'Competitions', path: '/competitions' },
-    { label: 'Passes', path: '/passes' },
-    { label: 'Accommodation', path: '/accommodation' }
+    }
   ];
 
   return (
@@ -58,10 +54,7 @@ export default function Header({ onToggleMobileMenu, onShowToast, vaagaUrl = '/v
           {navItems.map((item) => {
             const isActive =
               router.pathname === item.path ||
-              (item.path === '/tech' && router.pathname.startsWith('/tech')) ||
-              (item.path === '/workshops' && router.pathname.startsWith('/workshops')) ||
-              (item.path === '/competitions' && router.pathname.startsWith('/competitions')) ||
-              (item.path === '/events' && router.pathname.startsWith('/events'));
+              (item.path === '/tech' && router.pathname.startsWith('/tech'));
 
             return (
               <Link

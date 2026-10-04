@@ -8,18 +8,13 @@ export default function Footer() {
         <div className="footer-top-section">
           <ul className="footer-nav-list">
             <li>
-              <Link href="/competitions" className="footer-nav-link">
-                Events
+              <Link href="/tech" className="footer-nav-link">
+                TECH X
               </Link>
             </li>
             <li>
-              <Link href="/workshops" className="footer-nav-link">
-                Workshops
-              </Link>
-            </li>
-            <li>
-              <Link href="/passes" className="footer-nav-link">
-                Passes
+              <Link href="/vaaga" className="footer-nav-link">
+                VAAGA'26
               </Link>
             </li>
             <li>
