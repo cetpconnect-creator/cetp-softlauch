@@ -34,13 +34,16 @@ export default function GalaxyScene() {
         // ============================================================
         // 1. Constellation Network & Meteors Canvas
         // ============================================================
+        const getViewportWidth = () => Math.min(window.innerWidth, document.documentElement.clientWidth || window.innerWidth);
+        const getViewportHeight = () => window.innerHeight;
+
         const constCtx = constCanvas.getContext('2d');
-        let cWidth = (constCanvas.width = window.innerWidth);
-        let cHeight = (constCanvas.height = window.innerHeight);
+        let cWidth = (constCanvas.width = getViewportWidth());
+        let cHeight = (constCanvas.height = getViewportHeight());
 
         const nodes = Array.from({ length: 55 }, () => ({
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: Math.random() * getViewportWidth(),
+            y: Math.random() * getViewportHeight(),
             vx: (Math.random() - 0.5) * 0.28,
             vy: (Math.random() - 0.5) * 0.28,
             radius: Math.random() * 1.5 + 0.8,
@@ -141,7 +144,9 @@ export default function GalaxyScene() {
 
         // Fixed perspective locked to match Screenshot 2:
         // Inclined angle (~26°) looking down at the golden galaxy with the core glowing directly behind "2026"
-        const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 100);
+        const initWidth = getViewportWidth();
+        const initHeight = getViewportHeight();
+        const camera = new THREE.PerspectiveCamera(65, initWidth / initHeight, 0.1, 100);
         camera.position.set(0, 2.7, 5.8);
         camera.lookAt(0, -0.32, 0);
 
@@ -151,7 +156,7 @@ export default function GalaxyScene() {
             powerPreference: 'high-performance'
         });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(initWidth, initHeight);
         renderer.setClearColor(0x000000, 0);
         mount.appendChild(renderer.domElement);
 
@@ -338,13 +343,15 @@ export default function GalaxyScene() {
         // 6. Window Resize Handler
         // ============================================================
         function handleResize() {
-            cWidth = constCanvas.width = window.innerWidth;
-            cHeight = constCanvas.height = window.innerHeight;
+            const newW = getViewportWidth();
+            const newH = getViewportHeight();
+            cWidth = constCanvas.width = newW;
+            cHeight = constCanvas.height = newH;
 
-            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.aspect = newW / newH;
             camera.updateProjectionMatrix();
 
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(newW, newH);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         }
         window.addEventListener('resize', handleResize);

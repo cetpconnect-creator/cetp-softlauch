@@ -28,10 +28,24 @@
     max-width: 100% !important;
     width: 100% !important;
     margin: 0 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
 }
 
 .yukthi-transition-wrapper {
     width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.yukthix-portal-view,
+.home-page-view {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+    box-sizing: border-box;
 }
 
 /* Base Page Wrapper */
@@ -45,8 +59,10 @@
     color: var(--yk-text);
     min-height: 100vh;
     width: 100%;
+    max-width: 100%;
     position: relative;
     overflow-x: hidden;
+    box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
 }
 

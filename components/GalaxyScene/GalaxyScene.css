@@ -11,8 +11,13 @@
     inset: 0 !important;
     top: 0 !important;
     left: 0 !important;
-    width: 100vw !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
     height: 100vh !important;
+    height: 100dvh !important;
     pointer-events: none;
     z-index: 0 !important;
     overflow: hidden;
@@ -22,6 +27,7 @@
     user-select: none;
     -webkit-user-select: none;
     animation: galaxyFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    box-sizing: border-box !important;
 }
 
 @keyframes galaxyFadeIn {
@@ -41,12 +47,18 @@
     inset: 0 !important;
     top: 0 !important;
     left: 0 !important;
-    width: 100vw !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
     height: 100vh !important;
+    height: 100dvh !important;
     pointer-events: none;
     z-index: 0 !important;
     overflow: hidden;
     background: #04060a;
+    box-sizing: border-box !important;
 }
 
 .milky-way-layer {
@@ -97,14 +109,22 @@
     inset: 0 !important;
     top: 0 !important;
     left: 0 !important;
-    width: 100vw !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
     height: 100vh !important;
+    height: 100dvh !important;
     z-index: 1 !important;
     pointer-events: none;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
 }
 
 .webgl-mount canvas {
     display: block;
     width: 100% !important;
     height: 100% !important;
+    max-width: 100% !important;
 }
