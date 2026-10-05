@@ -72,32 +72,67 @@ export default function TechPage() {
     }
   ];
 
-  // Showcase items
+  // Showcase items - Distinguished Guests & Speakers
   const showcaseItems = [
     {
-      title: 'HyperScale LLM',
-      category: 'Real-Time Inference',
-      bg: "linear-gradient(135deg, rgba(229,9,20,0.3) 0%, rgba(5,5,5,0.95) 100%), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80')"
+      title: 'Joseph Annamkutty Jose',
+      category: 'Author & Motivational Speaker',
+      bio: 'Best-selling Indian author, motivational speaker and media personality.',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-joseph-annamkutty-jose.jpg')"
     },
     {
-      title: 'Autonomous Vision',
-      category: 'Edge Perception',
-      bg: "linear-gradient(135deg, rgba(229,9,20,0.2) 0%, rgba(5,5,5,0.95) 100%), url('https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80')"
+      title: 'Dr. Manju S. Nair',
+      category: 'Space Scientist',
+      bio: 'Space engineering scientist and academic associated with ISRO, TEDx speaker.',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-dr-manju-s-nair.jpg')"
     },
     {
-      title: 'Global Model Mesh',
-      category: 'Cluster Orchestration',
-      bg: "linear-gradient(135deg, rgba(229,9,20,0.25) 0%, rgba(5,5,5,0.95) 100%), url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80')"
+      title: 'Anoop Ambika',
+      category: 'CEO, Kerala Startup Mission',
+      bio: 'Serial entrepreneur, organiser and technology ecosystem leader.',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-anoop-ambika.jpg')"
     },
     {
-      title: 'Neural Studio',
-      category: 'Generative Synthesis',
-      bg: "linear-gradient(135deg, rgba(229,9,20,0.35) 0%, rgba(5,5,5,0.95) 100%), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80')"
+      title: 'Vinitha Joseph',
+      category: 'Women Entrepreneur',
+      bio: 'Founder & CEO of Bluepurple Consulting, Business Mentor & Entrepreneur.',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-vinitha-joseph.jpg')"
     },
     {
-      title: 'Adaptive Grid',
-      category: 'GPU Autoscaling',
-      bg: "linear-gradient(135deg, rgba(229,9,20,0.2) 0%, rgba(5,5,5,0.95) 100%), url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80')"
+      title: 'Avani S S',
+      category: 'Playback Singer',
+      bio: 'Acclaimed playback singer and musical artist.',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-avani-s-s.jpg')"
+    },
+    {
+      title: 'Ajmal Zayn',
+      category: 'Actor & Performer',
+      bio: 'Actor renowned for Kaaval, Athiradi and Kinavally.',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-ajmal-zayn.jpg')"
+    },
+    {
+      title: 'Dr. Umar Shehab',
+      category: 'Global Educationalist & Speaker',
+      bio: 'Chief Academic Strategist, renowned international educationalist and speaker.',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-dr-umar-shehab.jpg')"
+    },
+    {
+      title: 'Dr. A.K. Asraff',
+      category: 'Former Associate Director, ISRO',
+      bio: 'Distinguished space scientist and Former Associate Director at ISRO.',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-dr-a-k-asraff.jpg')"
+    },
+    {
+      title: 'Dr. Ciza Thomas',
+      category: 'Vice-Chancellor, KTU',
+      bio: 'Former Vice-Chancellor of APJ Abdul Kalam Technological University (KTU).',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-dr-ciza-thomas.jpg')"
+    },
+    {
+      title: 'Basi',
+      category: 'Teacher | Commentator | MC',
+      bio: 'Popular educator, commentator and versatile master of ceremonies.',
+      bg: "linear-gradient(180deg, rgba(229,9,20,0.1) 0%, rgba(5,5,5,0.25) 45%, rgba(5,5,5,0.88) 80%, rgba(5,5,5,0.98) 100%), url('/images/tech/cards/card-basi.jpg')"
     }
   ];
 
@@ -321,7 +356,7 @@ export default function TechPage() {
         </div>
 
         <ul className="nav-links">
-          <li><a href="#showcase" onClick={scrollTo('showcase')}>Work</a></li>
+          <li><a href="#showcase" onClick={scrollTo('showcase')}>Speakers</a></li>
           <li><a href="#about" onClick={scrollTo('about')}>About</a></li>
           <li><a href="#features" onClick={scrollTo('features')}>Features</a></li>
           <li><a href="#testimonials" onClick={scrollTo('testimonials')}>Voices</a></li>
@@ -346,7 +381,7 @@ export default function TechPage() {
       {/* Fullscreen Mobile Menu Drawer */}
       <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`} id="mobileMenu">
         <ul>
-          <li><a href="#showcase" className="mobile-link" onClick={scrollTo('showcase')}>Work</a></li>
+          <li><a href="#showcase" className="mobile-link" onClick={scrollTo('showcase')}>Speakers</a></li>
           <li><a href="#about" className="mobile-link" onClick={scrollTo('about')}>About</a></li>
           <li><a href="#features" className="mobile-link" onClick={scrollTo('features')}>Features</a></li>
           <li><a href="#testimonials" className="mobile-link" onClick={scrollTo('testimonials')}>Voices</a></li>
@@ -402,10 +437,10 @@ export default function TechPage() {
       {/* SHOWCASE SECTION */}
       <section className="showcase" id="showcase">
         <div className="showcase-header">
-          <p className="section-label reveal">Selected Work</p>
-          <h2 className="section-title reveal reveal-delay-1">Next-Gen AI Deployments</h2>
+          <p className="section-label reveal">Distinguished Guests</p>
+          <h2 className="section-title reveal reveal-delay-1">Keynote Speakers & Luminaries</h2>
           <p className="section-desc reveal reveal-delay-2" style={{ margin: '0 auto' }}>
-            Powering mission-critical production pipelines across industries worldwide.
+            Meet the visionary leaders, authors, scientists, and creators headlining TECH X.
           </p>
         </div>
 
@@ -418,6 +453,7 @@ export default function TechPage() {
               <div className="showcase-item-overlay">
                 <h4>{item.title}</h4>
                 <p>{item.category}</p>
+                {item.bio && <span className="showcase-bio">{item.bio}</span>}
               </div>
             </div>
           ))}

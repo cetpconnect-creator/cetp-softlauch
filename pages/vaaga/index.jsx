@@ -111,15 +111,26 @@ function Preloader() {
 
   const finish = useCallback(() => {
     setIsDone(true);
+    if (typeof window !== "undefined") {
+      try {
+        sessionStorage.setItem("vaaga_preloaded", "1");
+      } catch (e) {}
+    }
     document.body.classList.remove("is-loading");
-    setTimeout(() => document.body.classList.add("is-ready"), 200);
-    setTimeout(() => document.body.classList.add("is-intro-done"), 200 + 1200);
+    setTimeout(() => document.body.classList.add("is-ready"), 150);
+    setTimeout(() => document.body.classList.add("is-intro-done"), 800);
   }, []);
 
   useEffect(() => {
+    // Instant unlock if user has already visited in this session
+    if (typeof window !== "undefined" && sessionStorage.getItem("vaaga_preloaded")) {
+      finish();
+      return;
+    }
+
     const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
     const reduced = typeof window !== 'undefined' && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const DUR = reduced ? 200 : (isMobile ? 850 : 1400);
+    const DUR = reduced ? 150 : (isMobile ? 550 : 850);
     const start = performance.now();
 
     document.body.classList.add("is-loading");
@@ -239,6 +250,9 @@ function Navbar() {
             src="/images/vaaga-logo.png"
             alt="VAAGA'26.2.0"
             className="nav__logo-img"
+            width="180"
+            height="60"
+            decoding="async"
           />
         </a>
         <nav className="nav__links">
@@ -267,6 +281,8 @@ function Navbar() {
           <img
             src="/images/vaaga-logo.png"
             alt="VAAGA'26.2.0"
+            width="200"
+            height="80"
             style={{
               height: "80px",
               width: "auto",
@@ -292,16 +308,29 @@ function Navbar() {
    HERO
    ========================================================= */
 function Hero() {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const figureRef = useRef(null);
 
   useEffect(() => {
     const isMobile = typeof window !== "undefined" && window.innerWidth <= 900;
     if (isMobile) return;
 
+    let ticking = false;
+    let targetX = 0;
+    let targetY = 0;
+
     const onPointerMove = (e) => {
-      const nx = (e.clientX / window.innerWidth - 0.5) * 14;
-      const ny = (e.clientY / window.innerHeight - 0.5) * 10;
-      setTilt({ x: nx, y: ny });
+      targetX = (e.clientX / window.innerWidth - 0.5) * 14;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 10;
+
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          if (figureRef.current) {
+            figureRef.current.style.transform = `translate3d(${targetX.toFixed(2)}px, ${targetY.toFixed(2)}px, 0)`;
+          }
+          ticking = false;
+        });
+      }
     };
 
     window.addEventListener("pointermove", onPointerMove, { passive: true });
@@ -314,11 +343,9 @@ function Hero() {
 
       <div className="hero__inner">
         <div
+          ref={figureRef}
           className="hero__figure"
           id="heroFigure"
-          style={{
-            transform: `translate3d(${tilt.x}px, ${tilt.y}px, 0)`,
-          }}
         >
           <img
             src="/images/theyyam-deity.png"
@@ -326,6 +353,9 @@ function Hero() {
             className="hero__photo"
             loading="eager"
             decoding="async"
+            fetchPriority="high"
+            width="1000"
+            height="1400"
           />
         </div>
 
@@ -389,12 +419,22 @@ function About() {
     let reelTop = 0;
     let reelRun = 1;
     let vh = window.innerHeight;
+    let cachedFrameH = 500;
+    let cachedFrameW = 400;
+    let cachedWordLW = 150;
+    let cachedWordRW = 180;
+    let cachedWinW = window.innerWidth;
 
     const measureReel = () => {
       vh = window.innerHeight;
+      cachedWinW = window.innerWidth;
       const rr = reel.getBoundingClientRect();
       reelTop = rr.top + window.scrollY;
       reelRun = Math.max(1, rr.height - vh);
+      cachedFrameH = frame.offsetHeight || 500;
+      cachedFrameW = frame.offsetWidth || 400;
+      cachedWordLW = wordL.offsetWidth || 150;
+      cachedWordRW = wordR.offsetWidth || 180;
     };
     measureReel();
 
@@ -405,7 +445,7 @@ function About() {
       const p = reduced ? 1 : Math.min(1, Math.max(0, (sy - start) / (vh * 0.5 + reelRun * 0.6)));
 
       // Skip heavy video frame-to-canvas drawImage on mobile phones to prevent GPU pipeline stalls
-      if (!isMobile && gctx && isReelInView && !video.paused && t - glowT > 80) {
+      if (!isMobile && gctx && isReelInView && !video.paused && t - glowT > 100) {
         glowT = t;
         gctx.drawImage(video, 0, 0, glow.width, glow.height);
       }
@@ -418,15 +458,15 @@ function About() {
         frame.style.setProperty("--p", e.toFixed(3));
         glow.style.opacity = (e * 0.9).toFixed(3);
 
-        const isNarrow = window.innerWidth <= 900;
+        const isNarrow = cachedWinW <= 900;
         if (isNarrow) {
-          const oy = (frame.offsetHeight * s) / 2 + 14;
+          const oy = (cachedFrameH * s) / 2 + 14;
           wordL.style.transform = `translate3d(-50%, calc(-100% - ${oy.toFixed(1)}px), 0)`;
           wordR.style.transform = `translate3d(-50%, ${oy.toFixed(1)}px, 0)`;
         } else {
-          const pad = Math.min(48, Math.max(16, window.innerWidth * 0.034));
-          const o1 = Math.min((frame.offsetWidth * s) / 2 + 28, window.innerWidth / 2 - pad - wordL.offsetWidth);
-          const o2 = Math.min((frame.offsetWidth * s) / 2 + 28, window.innerWidth / 2 - pad - wordR.offsetWidth);
+          const pad = Math.min(48, Math.max(16, cachedWinW * 0.034));
+          const o1 = Math.min((cachedFrameW * s) / 2 + 28, cachedWinW / 2 - pad - cachedWordLW);
+          const o2 = Math.min((cachedFrameW * s) / 2 + 28, cachedWinW / 2 - pad - cachedWordRW);
           wordL.style.transform = `translate3d(-${o1.toFixed(1)}px, -50%, 0)`;
           wordR.style.transform = `translate3d(${o2.toFixed(1)}px, -50%, 0)`;
         }
@@ -591,7 +631,9 @@ function About() {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="none"
+              width="720"
+              height="900"
               aria-label="Performers in festive costume walking the ramp on the CETP main stage"
             ></video>
             <figcaption className="about__cap">
@@ -638,12 +680,12 @@ function Showcase() {
           <h4>The Contenders</h4>
           <p>CSE, ECE, EEE, ME, IT and the Department of Architecture (B.Arch). Six departments with one crown at stake and no one holding back.</p>
           <div className="avatars">
-            <img src="/images/estrella-11.jpg" alt="Team CSE" title="Team CSE" loading="lazy" decoding="async" />
-            <img src="/images/estrella-06.jpg" alt="Team ECE" title="Team ECE" loading="lazy" decoding="async" />
-            <img src="/images/estrella-05.jpg" alt="Team EEE" title="Team EEE" loading="lazy" decoding="async" />
-            <img src="/images/estrella-08.jpg" alt="Team ME" title="Team ME" loading="lazy" decoding="async" />
-            <img src="/images/estrella-02.jpg" alt="Team IT" title="Team IT" loading="lazy" decoding="async" />
-            <img src="/images/estrella-04.jpg" alt="Team B.Arch" title="Team B.Arch" loading="lazy" decoding="async" />
+            <img src="/images/estrella-11.jpg" alt="Team CSE" title="Team CSE" width="48" height="48" loading="lazy" decoding="async" />
+            <img src="/images/estrella-06.jpg" alt="Team ECE" title="Team ECE" width="48" height="48" loading="lazy" decoding="async" />
+            <img src="/images/estrella-05.jpg" alt="Team EEE" title="Team EEE" width="48" height="48" loading="lazy" decoding="async" />
+            <img src="/images/estrella-08.jpg" alt="Team ME" title="Team ME" width="48" height="48" loading="lazy" decoding="async" />
+            <img src="/images/estrella-02.jpg" alt="Team IT" title="Team IT" width="48" height="48" loading="lazy" decoding="async" />
+            <img src="/images/estrella-04.jpg" alt="Team B.Arch" title="Team B.Arch" width="48" height="48" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>
@@ -653,6 +695,8 @@ function Showcase() {
           data-speed="-0.08"
           src="/images/theyyam-dancer.webp"
           alt="A dancer in Theyyam-inspired costume and makeup performing on stage"
+          width="700"
+          height="900"
           loading="lazy"
           decoding="async"
         />
@@ -777,11 +821,6 @@ function Events() {
     carousel.addEventListener("pointercancel", endDrag);
     carousel.addEventListener("click", onClick, true);
 
-    const prevBtn = document.getElementById("prev");
-    const nextBtn = document.getElementById("next");
-    if (prevBtn) prevBtn.addEventListener("click", onPrev);
-    if (nextBtn) nextBtn.addEventListener("click", onNext);
-
     const onResize = () => {
       updateMaxX();
       requestTick();
@@ -795,11 +834,46 @@ function Events() {
       carousel.removeEventListener("pointercancel", endDrag);
       carousel.removeEventListener("click", onClick, true);
       window.removeEventListener("resize", onResize);
-      if (prevBtn) prevBtn.removeEventListener("click", onPrev);
-      if (nextBtn) nextBtn.removeEventListener("click", onNext);
       if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
+
+  const onNext = () => {
+    const track = trackRef.current;
+    const carousel = carouselRef.current;
+    if (!track || !carousel) return;
+    const maxX = Math.max(0, track.scrollWidth - carousel.clientWidth + 24);
+    const step = (track.children[0]?.clientWidth || 280) + 12;
+    // trigger scroll smoothly
+    const currentTransform = track.style.transform;
+    const match = currentTransform.match(/translate3d\((-[0-9.]+)px/);
+    const current = match ? Math.abs(parseFloat(match[1])) : 0;
+    const target = Math.min(maxX, current + step);
+    track.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+    track.style.transform = `translate3d(-${target.toFixed(1)}px,0,0)`;
+    if (progressRef.current) {
+      progressRef.current.style.transform = `scaleX(${0.2 + 0.8 * (target / (maxX || 1))})`;
+    }
+    setTimeout(() => { if (track) track.style.transition = ''; }, 350);
+  };
+
+  const onPrev = () => {
+    const track = trackRef.current;
+    const carousel = carouselRef.current;
+    if (!track || !carousel) return;
+    const maxX = Math.max(0, track.scrollWidth - carousel.clientWidth + 24);
+    const step = (track.children[0]?.clientWidth || 280) + 12;
+    const currentTransform = track.style.transform;
+    const match = currentTransform.match(/translate3d\((-[0-9.]+)px/);
+    const current = match ? Math.abs(parseFloat(match[1])) : 0;
+    const target = Math.max(0, current - step);
+    track.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+    track.style.transform = `translate3d(-${target.toFixed(1)}px,0,0)`;
+    if (progressRef.current) {
+      progressRef.current.style.transform = `scaleX(${0.2 + 0.8 * (target / (maxX || 1))})`;
+    }
+    setTimeout(() => { if (track) track.style.transition = ''; }, 350);
+  };
 
   return (
     <section className="auctions section" id="auctions">
@@ -821,6 +895,8 @@ function Events() {
                   loading="lazy"
                   decoding="async"
                   draggable="false"
+                  width="340"
+                  height="440"
                   src={`/images/estrella-${x.img}.jpg`}
                 />
                 <span className="card__lot">EVENT {String(i + 1).padStart(2, "0")}</span>
@@ -839,9 +915,9 @@ function Events() {
       </div>
 
       <div className="carousel__nav">
-        <button className="arrow" id="prev" aria-label="Previous">←</button>
+        <button className="arrow" id="prev" aria-label="Previous" onClick={onPrev}>←</button>
         <div className="carousel__progress"><i id="progress" ref={progressRef}></i></div>
-        <button className="arrow" id="next" aria-label="Next">→</button>
+        <button className="arrow" id="next" aria-label="Next" onClick={onNext}>→</button>
       </div>
     </section>
   );
@@ -1063,10 +1139,10 @@ function Gallery() {
                 ref={(el) => (itemsRef.current[i] = el)}
               >
                 <figure className="gallery__fig gallery__fig--a">
-                  <img src={m.imgA} alt={m.altA} loading="lazy" decoding="async" />
+                  <img src={m.imgA} alt={m.altA} width="600" height="750" loading="lazy" decoding="async" />
                 </figure>
                 <figure className="gallery__fig gallery__fig--b">
-                  <img src={m.imgB} alt={m.altB} loading="lazy" decoding="async" />
+                  <img src={m.imgB} alt={m.altB} width="600" height="750" loading="lazy" decoding="async" />
                 </figure>
               </div>
             ))}
@@ -1184,13 +1260,13 @@ function Host() {
   return (
     <section className="host section" id="host" ref={sectionRef}>
       <div className="host__img host__img--1" ref={img1Ref}>
-        <img src="/images/estrella-02.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/estrella-02.jpg" alt="" width="440" height="260" loading="lazy" decoding="async" />
       </div>
       <div className="host__img host__img--2" ref={img2Ref}>
-        <img src="/images/estrella-03.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/estrella-03.jpg" alt="" width="460" height="300" loading="lazy" decoding="async" />
       </div>
       <div className="host__img host__img--3" ref={img3Ref}>
-        <img src="/images/estrella-07.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/estrella-07.jpg" alt="" width="320" height="250" loading="lazy" decoding="async" />
       </div>
 
       <div className="host__content">
@@ -1264,9 +1340,11 @@ function Footer() {
    ========================================================= */
 function ScrollReveal() {
   useEffect(() => {
-    // Word split on elements with [data-split]
+    // Word split on elements with [data-split] (guarded against re-execution)
     const splitEls = document.querySelectorAll("[data-split]");
     splitEls.forEach((el) => {
+      if (el.dataset.splitDone) return;
+      el.dataset.splitDone = "true";
       let i = 0;
       const walk = (node) => {
         [...node.childNodes].forEach((n) => {
@@ -1331,6 +1409,9 @@ export default function VaagaPage() {
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/vaaga-logo.png" />
+        <link rel="preload" as="image" href="/images/theyyam-deity.png" fetchPriority="high" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </Head>
 
       <Preloader />

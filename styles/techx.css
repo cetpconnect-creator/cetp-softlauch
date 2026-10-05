@@ -637,12 +637,12 @@ nav.topbar.scrolled {
   background-size: cover;
   background-position: center;
   transition: transform 0.6s ease, filter 0.6s ease;
-  filter: brightness(0.65) contrast(1.1);
+  filter: brightness(0.85) contrast(1.05);
 }
 
 .showcase-item:hover .showcase-item-bg {
-  transform: scale(1.08);
-  filter: brightness(0.9) contrast(1.15);
+  transform: scale(1.06);
+  filter: brightness(1) contrast(1.1);
 }
 
 .showcase-item-overlay {
@@ -651,8 +651,8 @@ nav.topbar.scrolled {
   left: 0;
   right: 0;
   padding: 2.2rem 1.8rem;
-  background: linear-gradient(180deg, transparent 0%, rgba(5, 5, 5, 0.95) 100%);
-  transform: translateY(10px);
+  background: linear-gradient(180deg, transparent 0%, rgba(5, 5, 5, 0.96) 100%);
+  transform: translateY(6px);
   transition: all 0.4s ease;
 }
 
@@ -667,6 +667,7 @@ nav.topbar.scrolled {
   margin-bottom: 0.4rem;
   color: #fff;
   letter-spacing: 0.5px;
+  line-height: 1.25;
 }
 
 .showcase-item-overlay p {
@@ -675,6 +676,29 @@ nav.topbar.scrolled {
   letter-spacing: 2px;
   text-transform: uppercase;
   font-weight: 600;
+}
+
+.showcase-bio {
+  display: block;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.78);
+  margin-top: 0.5rem;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(4px);
+  transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+  text-transform: none;
+  letter-spacing: 0.2px;
+  font-weight: 400;
+}
+
+.showcase-item:hover .showcase-bio {
+  max-height: 80px;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ===== ABOUT SECTION ===== */

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import HeadlinersOrbit from '../HeadlinersOrbit';
+import TemporalReflections from '../TemporalReflections';
 
 /* ==========================================================================
    YUKTHI X'26 - SINGLE-FILE CONSOLIDATED COMPONENT
@@ -19,109 +20,6 @@ import { useRouter } from 'next/router';
 /* =========================================================
    DATA & ASSETS
    ========================================================= */
-export const YUKTHI_SUMMITS = [
-    {
-        id: 'tech-summit',
-        index: '01',
-        name: 'TECH SUMMIT',
-        brief: 'Engineering the future through disruptive innovations.',
-        image: 'https://2026.techkriti.org/images/summits/tech-summit.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80',
-        category: 'DISRUPTIVE INNOVATION',
-        route: '/tech'
-    },
-    {
-        id: 'ai-summit',
-        index: '02',
-        name: 'AI SUMMIT',
-        brief: 'Exploring the frontiers of artificial intelligence and machine learning.',
-        image: 'https://2026.techkriti.org/images/summits/ai-summit.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1000&q=80',
-        category: 'MACHINE LEARNING & GENAI',
-        route: '/tech'
-    },
-    {
-        id: 'rakshakriti',
-        index: '03',
-        name: 'RAKSHAKRITI',
-        brief: 'Strengthening national security through indigenous defense technology.',
-        image: 'https://2026.techkriti.org/images/summits/rakshakriti.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80',
-        category: 'DEFENSE & AEROSPACE',
-        route: '/tech'
-    },
-    {
-        id: 'medtech',
-        index: '04',
-        name: 'MEDTECH',
-        brief: 'Revolutionizing healthcare with advanced medical engineering.',
-        image: 'https://2026.techkriti.org/images/summits/medtech.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=1000&q=80',
-        category: 'BIOMEDICAL ENGINEERING',
-        route: '/tech'
-    },
-    {
-        id: 'space',
-        index: '05',
-        name: 'SPACE',
-        brief: 'Scaling new heights in aerospace and interplanetary exploration.',
-        image: 'https://2026.techkriti.org/images/summits/space.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1000&q=80',
-        category: 'ASTRONOMY & ROCKETRY',
-        route: '/tech'
-    },
-    {
-        id: 'e-conclave',
-        index: '06',
-        name: 'E - CONCLAVE',
-        brief: "Igniting the entrepreneurial spirit of tomorrow's leaders.",
-        image: 'https://2026.techkriti.org/images/summits/e-conclave.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1000&q=80',
-        category: 'VENTURE & STARTUPS',
-        route: '/tech'
-    },
-    {
-        id: 'sustainability',
-        index: '07',
-        name: 'SUSTAINABILITY',
-        brief: 'Crafting eco-friendly solutions for a greener planet.',
-        image: 'https://2026.techkriti.org/images/summits/sustainability.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1000&q=80',
-        category: 'CLEANTECH & CLIMATE',
-        route: '/tech'
-    },
-    {
-        id: 'industry-4-0',
-        index: '08',
-        name: 'INDUSTRY 4.0',
-        brief: 'Mastering the smart manufacturing and automation revolution.',
-        image: 'https://2026.techkriti.org/images/summits/industry-4-0.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1000&q=80',
-        category: 'SMART AUTOMATION',
-        route: '/tech'
-    },
-    {
-        id: 'women-panel',
-        index: '09',
-        name: 'WOMEN PANEL',
-        brief: 'Celebrating and empowering women leaders in the tech ecosystem.',
-        image: 'https://2026.techkriti.org/images/summits/women-panel.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1000&q=80',
-        category: 'WOMEN IN TECH',
-        route: '/tech'
-    },
-    {
-        id: 'vision-360',
-        index: '10',
-        name: 'VISION 360',
-        brief: 'Shaping global policies through multifaceted dialogue.',
-        image: 'https://2026.techkriti.org/images/summits/vision-360.webp',
-        fallbackImage: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=80',
-        category: 'POLICY & DIPLOMACY',
-        route: '/tech'
-    }
-];
-
 export const GALLERY_IMAGES = [
     { id: 1, src: '/images/gallery/dodge_drift.jpg', alt: 'Dodge Charger Dirt Drift Stunt' },
     { id: 2, src: '/images/gallery/bike_stunt.jpg', alt: 'Extreme Bike Stunt on Fire' },
@@ -277,8 +175,8 @@ export function Header({
             path: '/tech'
         },
         {
-            label: 'Summits',
-            path: '#summits'
+            label: 'Archives',
+            path: '#archives'
         },
         {
             label: 'Gallery',
@@ -442,8 +340,8 @@ export function MobileMenu({
             featured: true
         },
         {
-            label: 'Flagship Summits',
-            path: '#summits'
+            label: 'Archives (Reflections)',
+            path: '#archives'
         },
         {
             label: 'Photo Gallery',
@@ -614,7 +512,7 @@ export const HeroMainTitle = ({ text = "YUKTHI X'26" }) => {
    5. COUNTDOWN TIMER COMPONENT
    ========================================================= */
 export const CountdownTimer = () => {
-    const [timeLeft, setTimeLeft] = useState({ days: '06', hours: '20', mins: '43', secs: '25' });
+    const [timeLeft, setTimeLeft] = useState({ days: '07', hours: '13', mins: '15', secs: '35' });
 
     useEffect(() => {
         const target = new Date('2026-10-12T09:00:00+05:30').getTime();
@@ -682,12 +580,12 @@ export function Hero({ onExplore, onShowToast }) {
 
             {/* Primary Action Buttons: Dark Transparent Glass + Subtle Galaxy Visible + Thin Cyan/Gold Glowing Border */}
             <div className="hero-glass-actions">
-                <a
-                    href="#summits"
+                <Link
+                    href="/tech"
                     className="hero-glass-btn hero-glass-btn--cyan"
                 >
-                    EXPLORE SUMMITS
-                </a>
+                    EXPLORE TECH X
+                </Link>
                 <a
                     href="#galleryx"
                     className="hero-glass-btn hero-glass-btn--gold"
@@ -695,307 +593,14 @@ export function Hero({ onExplore, onShowToast }) {
                     VIEW GALLERY
                 </a>
             </div>
+
+            {/* Countdown Timer (Downside of Buttons) */}
+            <div className="hero-downside-countdown">
+                <CountdownTimer />
+            </div>
         </section>
     );
 }
-
-/* =========================================================
-   7. FLAGSHIP SUMMITS DIAL SHOWCASE
-   ========================================================= */
-export const YukthiSummitsDialShowcase = () => {
-    const router = useRouter();
-    const [activeIndex, setActiveIndex] = useState(1);
-    const [isHovered, setIsHovered] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const containerRef = useRef(null);
-    const cardRef = useRef(null);
-    const wheelCooldownRef = useRef(false);
-    const touchStartY = useRef(0);
-
-    const currentSummit = YUKTHI_SUMMITS[activeIndex];
-
-    useEffect(() => {
-        if (isHovered) return;
-
-        const intervalTime = 40;
-        const totalDuration = 3800;
-        const step = (intervalTime / totalDuration) * 100;
-
-        const timer = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    setActiveIndex((current) => (current + 1) % YUKTHI_SUMMITS.length);
-                    return 0;
-                }
-                return prev + step;
-            });
-        }, intervalTime);
-
-        return () => clearInterval(timer);
-    }, [isHovered, activeIndex]);
-
-    const handleWheel = useCallback((e) => {
-        if (Math.abs(e.deltaY) < 15) return;
-        if (wheelCooldownRef.current) return;
-        wheelCooldownRef.current = true;
-        setTimeout(() => {
-            wheelCooldownRef.current = false;
-        }, 220);
-
-        if (e.deltaY > 0) {
-            setActiveIndex((prev) => (prev + 1) % YUKTHI_SUMMITS.length);
-        } else {
-            setActiveIndex((prev) => (prev - 1 + YUKTHI_SUMMITS.length) % YUKTHI_SUMMITS.length);
-        }
-        setProgress(0);
-    }, []);
-
-    const handleMouseMove = useCallback((e) => {
-        if (!containerRef.current) return;
-        const rect = containerRef.current.getBoundingClientRect();
-        const normX = (e.clientX - rect.left) / rect.width - 0.5;
-        const normY = (e.clientY - rect.top) / rect.height - 0.5;
-        setMousePos({ x: normX, y: normY });
-
-        if (cardRef.current) {
-            const cardRect = cardRef.current.getBoundingClientRect();
-            const cardX = ((e.clientX - cardRect.left) / cardRect.width) * 100;
-            const cardY = ((e.clientY - cardRect.top) / cardRect.height) * 100;
-            cardRef.current.style.setProperty('--mouse-x', `${cardX}%`);
-            cardRef.current.style.setProperty('--mouse-y', `${cardY}%`);
-        }
-    }, []);
-
-    const handleTouchStart = (e) => {
-        touchStartY.current = e.touches[0].clientY;
-    };
-
-    const handleTouchEnd = (e) => {
-        const touchEndY = e.changedTouches[0].clientY;
-        const diff = touchStartY.current - touchEndY;
-        if (Math.abs(diff) > 40) {
-            if (diff > 0) {
-                setActiveIndex((prev) => (prev + 1) % YUKTHI_SUMMITS.length);
-            } else {
-                setActiveIndex((prev) => (prev - 1 + YUKTHI_SUMMITS.length) % YUKTHI_SUMMITS.length);
-            }
-            setProgress(0);
-        }
-    };
-
-    const dialRotationAngle = -activeIndex * 20 + mousePos.y * 8;
-
-    return (
-        <section
-            id="summits"
-            ref={containerRef}
-            className="techkriti-summits-section"
-            onWheel={handleWheel}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => {
-                setIsHovered(false);
-                setMousePos({ x: 0, y: 0 });
-            }}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            aria-label="Yukthi X'26 Flagship Summits"
-        >
-            <div className="techkriti-ambient-glow-left" />
-            <div className="techkriti-ambient-glow-right" />
-
-            <div className="techkriti-stage-container">
-                {/* LEFT SIDE: RADAR DIAL */}
-                <div className="techkriti-dial-side">
-                    <div className="techkriti-radar-container">
-                        <svg
-                            className="techkriti-radar-svg"
-                            viewBox="0 0 600 600"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <defs>
-                                <radialGradient id="ykDialCenterGlow" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.28" />
-                                    <stop offset="50%" stopColor="#b45309" stopOpacity="0.08" />
-                                    <stop offset="100%" stopColor="#000000" stopOpacity="0" />
-                                </radialGradient>
-                                <radialGradient id="ykDialCoreGlow" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.35" />
-                                    <stop offset="70%" stopColor="#f59e0b" stopOpacity="0.05" />
-                                    <stop offset="100%" stopColor="#000000" stopOpacity="0" />
-                                </radialGradient>
-                            </defs>
-
-                            <circle cx="300" cy="300" r="280" stroke="rgba(245, 158, 11, 0.22)" strokeWidth="1" />
-                            <circle cx="300" cy="300" r="235" stroke="rgba(245, 158, 11, 0.16)" strokeWidth="1" />
-                            <circle cx="300" cy="300" r="185" stroke="rgba(245, 158, 11, 0.12)" strokeWidth="1" strokeDasharray="3 3" />
-                            <circle cx="300" cy="300" r="130" stroke="rgba(245, 158, 11, 0.08)" strokeWidth="1" />
-                            <circle cx="300" cy="300" r="120" fill="url(#ykDialCenterGlow)" />
-                            <circle cx="300" cy="300" r="60" fill="url(#ykDialCoreGlow)" />
-
-                            <g
-                                className="dial-ticks-group"
-                                style={{
-                                    transform: `rotate(${dialRotationAngle}deg)`
-                                }}
-                            >
-                                {Array.from({ length: 120 }).map((_, i) => {
-                                    const angle = (i * 360) / 120;
-                                    const isMajor = i % 10 === 0;
-                                    const isSemi = i % 5 === 0;
-                                    const tickLength = isMajor ? 18 : isSemi ? 11 : 6;
-                                    const r1 = 280;
-                                    const r2 = r1 - tickLength;
-                                    const rad = (angle * Math.PI) / 180;
-                                    const x1 = 300 + r1 * Math.cos(rad);
-                                    const y1 = 300 + r1 * Math.sin(rad);
-                                    const x2 = 300 + r2 * Math.cos(rad);
-                                    const y2 = 300 + r2 * Math.sin(rad);
-                                    return (
-                                        <line
-                                            key={i}
-                                            x1={x1}
-                                            y1={y1}
-                                            x2={x2}
-                                            y2={y2}
-                                            stroke={isMajor ? '#f59e0b' : isSemi ? 'rgba(245, 158, 11, 0.55)' : 'rgba(245, 158, 11, 0.25)'}
-                                            strokeWidth={isMajor ? 2 : 1}
-                                        />
-                                    );
-                                })}
-                            </g>
-                        </svg>
-                    </div>
-
-                    <div className="dial-center-pointer">
-                        <div className="dial-pointer-line" />
-                        <div className="dial-pointer-bracket">
-                            <span className="dial-bracket-number">{currentSummit.index}</span>
-                        </div>
-                    </div>
-
-                    <div className="summits-list-window">
-                        <div
-                            className="summits-list-track"
-                            style={{
-                                transform: `translateY(-${activeIndex * 68 + 34}px)`
-                            }}
-                        >
-                            {YUKTHI_SUMMITS.map((summit, idx) => {
-                                const isActive = idx === activeIndex;
-                                const dist = Math.abs(idx - activeIndex);
-                                const opacity = isActive ? 1 : dist === 1 ? 0.38 : dist === 2 ? 0.16 : 0.04;
-                                const scale = isActive ? 1.05 : dist === 1 ? 0.94 : 0.88;
-
-                                return (
-                                    <button
-                                        key={summit.id}
-                                        className={`summit-name-row ${isActive ? 'active' : ''}`}
-                                        onClick={() => {
-                                            setActiveIndex(idx);
-                                            setProgress(0);
-                                        }}
-                                        onMouseEnter={() => {
-                                            setActiveIndex(idx);
-                                            setProgress(0);
-                                        }}
-                                        style={{
-                                            opacity,
-                                            transform: `scale(${scale})`
-                                        }}
-                                        title={`View ${summit.name}`}
-                                    >
-                                        <span className="summit-row-index">{summit.index}</span>
-                                        <span className="summit-row-title">{summit.name}</span>
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </div>
-
-                {/* RIGHT SIDE: 3D CARD */}
-                <div className="techkriti-card-side">
-                    <div
-                        ref={cardRef}
-                        className="summit-3d-card-wrapper"
-                        style={{
-                            transform: `perspective(1000px) rotateY(${mousePos.x * 14}deg) rotateX(${-mousePos.y * 14}deg)`,
-                            transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)'
-                        }}
-                        onClick={() => router.push(currentSummit.route)}
-                        title={`Explore ${currentSummit.name}`}
-                    >
-                        <img
-                            key={currentSummit.id}
-                            src={currentSummit.image}
-                            alt={currentSummit.name}
-                            className="summit-card-bg-image"
-                            onError={(e) => {
-                                if (e.currentTarget.src !== currentSummit.fallbackImage) {
-                                    e.currentTarget.src = currentSummit.fallbackImage;
-                                }
-                            }}
-                        />
-                        <div className="summit-card-glare" />
-
-                        <div className="summit-card-overlay">
-                            <div className="summit-card-meta">
-                                <span className="summit-category-pill">{currentSummit.category}</span>
-                                <span className="summit-index-counter">
-                                    {currentSummit.index} / {YUKTHI_SUMMITS.length.toString().padStart(2, '0')}
-                                </span>
-                            </div>
-
-                            <h3 className="summit-card-title">{currentSummit.name}</h3>
-                            <p className="summit-card-brief">{currentSummit.brief}</p>
-
-                            <div className="summit-card-actions">
-                                <span className="summit-action-btn">
-                                    <span>EXPLORE SUMMIT</span>
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </span>
-                            </div>
-
-                            <div className="summit-auto-progress-bar">
-                                <div
-                                    className="summit-auto-progress-fill"
-                                    style={{ width: `${isHovered ? 100 : progress}%` }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="techkriti-controls-row">
-                <div className="summit-dot-indicators" role="tablist" aria-label="Summit Selection">
-                    {YUKTHI_SUMMITS.map((summit, idx) => (
-                        <button
-                            key={summit.id}
-                            className={`summit-dot ${idx === activeIndex ? 'active' : ''}`}
-                            onClick={() => {
-                                setActiveIndex(idx);
-                                setProgress(0);
-                            }}
-                            title={summit.name}
-                            aria-label={summit.name}
-                        />
-                    ))}
-                </div>
-
-                <div className="summit-mouse-hint">
-                    <span>{isHovered ? 'PAUSED • MOVE MOUSE / SCROLL WHEEL' : 'AUTO-ROTATING • HOVER TO EXPLORE'}</span>
-                </div>
-            </div>
-        </section>
-    );
-};
 
 /* =========================================================
    8. 3D INFINITE SPIRAL GALLERY (DESKTOP)
@@ -1584,15 +1189,13 @@ export default function YukthiX({
                 {/* Hero Section */}
                 <Hero onShowToast={showToast} />
 
-                {/* Live Countdown Section */}
-                <div className="gallery-downside-countdown" style={{ margin: '2.5rem auto 2rem', textAlign: 'center' }}>
-                    <CountdownTimer />
-                </div>
-
-                {/* Flagship Summits Dial Showcase */}
-                <YukthiSummitsDialShowcase />
+                {/* Headliners Orbit Showcase (Curated 3D Lineup) */}
+                <HeadlinersOrbit onShowToast={showToast} />
 
                 {/* 3D Infinite Spiral & Mobile Gallery */}
+                {/* Temporal Reflections Archives (3D Depth Stack) */}
+                <TemporalReflections onShowToast={showToast} />
+
                 <YukthiGallerySpiral />
             </main>
 

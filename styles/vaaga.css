@@ -580,10 +580,25 @@ body.is-ready .hero__scroll {
   }
 }
 
-/* ---------- Sections ---------- */
+/* ---------- Sections & Performance Containment ---------- */
 .section {
   padding: clamp(100px, 14vw, 200px) var(--pad);
   position: relative;
+}
+
+.expo,
+.auctions,
+.host {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 750px;
+}
+
+.hero__figure,
+.about__frame,
+.card,
+.gallery__item,
+.host__img {
+  transform: translateZ(0);
 }
 
 .h2 {

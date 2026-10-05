@@ -106,18 +106,23 @@ export default function Hero({ onExplore }) {
 
       {/* Primary Action Buttons: Dark Transparent Glass + Subtle Galaxy Visible + Thin Cyan/Gold Glowing Border */}
       <div className="hero-glass-actions">
-        <a
-          href="#summits"
+        <Link
+          href="/tech"
           className="hero-glass-btn hero-glass-btn--cyan"
         >
-          EXPLORE SUMMITS
-        </a>
+          EXPLORE TECH X
+        </Link>
         <a
           href="#galleryx"
           className="hero-glass-btn hero-glass-btn--gold"
         >
           VIEW GALLERY
         </a>
+      </div>
+
+      {/* Countdown Timer (Downside of Buttons) */}
+      <div className="hero-downside-countdown">
+        <CountdownTimer />
       </div>
     </section>
   );
