@@ -353,7 +353,7 @@ function Hero() {
             className="hero__photo"
             loading="eager"
             decoding="async"
-            fetchPriority="high"
+            fetchpriority="high"
             width="1000"
             height="1400"
           />
@@ -1409,7 +1409,7 @@ export default function VaagaPage() {
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/vaaga-logo.png" />
-        <link rel="preload" as="image" href="/images/theyyam-deity.png" fetchPriority="high" />
+        <link rel="preload" as="image" href="/images/theyyam-deity.png" fetchpriority="high" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </Head>

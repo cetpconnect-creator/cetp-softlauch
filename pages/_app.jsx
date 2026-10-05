@@ -8,17 +8,9 @@ import Footer from '../components/layout/Footer';
 import StarfieldCanvas from '../components/common/StarfieldCanvas';
 
 import '../styles/globals.css';
-import '../components/GalaxyScene/GalaxyScene.css';
 import '../styles/techx.css';
 import '../styles/vaaga.css';
 import '../styles/yukthi.css';
-import '../styles/headliners.css';
-import '../styles/temporal-reflections.css';
-
-const GalaxyScene = dynamic(
-  () => import('../components/GalaxyScene/GalaxyScene'),
-  { ssr: false }
-);
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -78,8 +70,6 @@ export default function App({ Component, pageProps }) {
         </title>
       </Head>
 
-      {/* YUKTHI galaxy scene */}
-      {(isHome || isYukthi) && <GalaxyScene />}
 
       {/* Other YUKTHI subpages only */}
       {!isHome && !isTech && !isVaaga && !isYukthi && (

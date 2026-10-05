@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import HeadlinersOrbit from '../../components/HeadlinersOrbit';
-import TemporalReflections from '../../components/TemporalReflections';
+import * as THREE from 'three';
 
 /* ==========================================================================
    YUKTHI X'26 - SINGLE-FILE CONSOLIDATED COMPONENT
@@ -1140,7 +1139,1333 @@ export function Footer() {
 }
 
 /* =========================================================
-   12. MAIN YUKTHI X CONSOLIDATED COMPONENT
+   10. HEADLINERS ORBIT SHOWCASE
+   ========================================================= */
+export const HEADLINER_ARTISTS = [
+  {
+    id: 1,
+    name: "K. K. Shailaja",
+    cat: "Former Health Minister • MLA",
+    img: "/images/headliners/kk-shailaja.jpg",
+    tint: "",
+    bio: "Celebrated Indian politician, MLA, and former Minister for Health and Social Justice of Kerala, globally recognized for visionary crisis leadership.",
+    stage: "Distinguished Guest • Main Stage"
+  },
+  {
+    id: 2,
+    name: "Dr. Ciza Thomas",
+    cat: "Former Vice-Chancellor, KTU",
+    img: "/images/headliners/dr-ciza-thomas.jpg",
+    tint: "",
+    bio: "Eminent academician, educational administrator, and Former Vice-Chancellor of APJ Abdul Kalam Technological University (KTU).",
+    stage: "Keynote Speaker • Academic Arena"
+  },
+  {
+    id: 3,
+    name: "Dr. Manju S. Nair",
+    cat: "Space Scientist • ISRO",
+    img: "/images/headliners/dr-manju-s-nair.jpg",
+    tint: "",
+    bio: "Renowned aerospace scientist associated with ISRO, researcher, author, and acclaimed TEDx speaker inspiring the next generation in science.",
+    stage: "Space & Tech Summit • Stage 1"
+  },
+  {
+    id: 4,
+    name: "Aniyan Midhun",
+    cat: "Wushu Champion • Martial Artist",
+    img: "/images/headliners/aniyan-midhun.jpg",
+    tint: "",
+    bio: "South Asian Wushu champion, combat sports practitioner, and celebrity guest from Kerala celebrated for his high-energy motivational presence.",
+    stage: "Youth Icon • Live Interaction"
+  },
+  {
+    id: 5,
+    name: "Sarath S (Neon Tech)",
+    cat: "Tech Creator & YouTuber",
+    img: "/images/headliners/sarath-neon-tech.jpg",
+    tint: "",
+    bio: "Leading technology influencer and founder of Sarath's Neon Tech with over 1.1 million subscribers, reviewing cutting-edge consumer gadgets.",
+    stage: "Creator Conclave • Tech Stage"
+  },
+  {
+    id: 6,
+    name: "Basi",
+    cat: "Teacher • Commentator • MC",
+    img: "/images/headliners/basi.jpg",
+    tint: "",
+    bio: "Passionate educator, commentator, and versatile master of ceremonies known for engaging live audiences.",
+    stage: "Distinguished Guest • Live Stage"
+  },
+  {
+    id: 7,
+    name: "Almaram Music Band",
+    cat: "Live Indie Fusion • Pro Show",
+    img: "/images/headliners/almaram-music-band.jpg",
+    tint: "",
+    bio: "Acclaimed Kerala music band blending folk traditions with contemporary acoustic rhythms for an unforgettable live pro-show experience.",
+    stage: "Grand Pro Show • Main Arena"
+  }
+];
+
+const HEADLINERS_REPEAT_COUNT = 4;
+
+export function HeadlinersOrbit({ onShowToast }) {
+  const [selectedArtist, setSelectedArtist] = useState(null);
+  const canvasRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const trackRef = useRef(null);
+  const pathRef = useRef(null);
+
+  // Drag & scroll physics state refs
+  const xRef = useRef(0);
+  const speedRef = useRef(0.65);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startScrollRef = useRef(0);
+  const lastXRef = useRef(0);
+  const lastTimeRef = useRef(0);
+  const velocityRef = useRef(0);
+  const hasMovedRef = useRef(false);
+  const momentumTimeoutRef = useRef(null);
+
+  // 1. Particle Canvas Background Effect
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId;
+    let particles = [];
+    let width = 0;
+    let height = 0;
+
+    const resize = () => {
+      const parent = canvas.parentElement;
+      width = parent ? parent.clientWidth : window.innerWidth;
+      height = parent ? parent.clientHeight : 700;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Initialize particles with gold/amber cosmic galaxy colors
+      const count = Math.max(30, Math.floor(width * 0.08));
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        const isGold = Math.random() > 0.35;
+        const rightBias = Math.pow(Math.random(), 0.7);
+        const px = width * (0.15 + rightBias * 0.85) + (Math.random() - 0.5) * 120;
+        particles.push({
+          x: px,
+          y: Math.random() * height,
+          r: isGold ? Math.random() * 1.6 + 0.3 : Math.random() * 1.1 + 0.2,
+          alpha: isGold ? Math.random() * 0.9 + 0.1 : Math.random() * 0.6 + 0.2,
+          gold: isGold,
+          vx: (Math.random() - 0.5) * (isGold ? 0.22 : 0.05),
+          vy: (Math.random() - 0.5) * (isGold ? 0.16 : 0.04),
+          tw: Math.random() * Math.PI * 2
+        });
+      }
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    let t = 0;
+    const draw = () => {
+      t += 0.008;
+      ctx.clearRect(0, 0, width, height);
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy + Math.sin(t + p.tw) * 0.06;
+        p.tw += 0.01;
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        if (p.gold) {
+          ctx.fillStyle = `rgba(244, 190, 108, ${p.alpha * 0.95})`;
+          ctx.shadowBlur = p.r * 4;
+          ctx.shadowColor = 'rgba(244, 190, 108, 0.85)';
+        } else {
+          ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+          ctx.shadowBlur = 0;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      animId = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      cancelAnimationFrame(animId);
+    };
+  }, []);
+
+  // 2. Dotted line animated stroke offset
+  useEffect(() => {
+    let dash = 0;
+    let dashAnimId;
+    const path = pathRef.current;
+    if (!path) return;
+
+    const animateDash = () => {
+      dash = (dash + 0.6) % 24;
+      path.style.strokeDashoffset = String(dash);
+      dashAnimId = requestAnimationFrame(animateDash);
+    };
+    animateDash();
+
+    return () => cancelAnimationFrame(dashAnimId);
+  }, []);
+
+  // 3. Marquee Drag & Physics Loop
+  useEffect(() => {
+    const track = trackRef.current;
+    const wrapper = wrapperRef.current;
+    if (!track || !wrapper) return;
+
+    let rafId;
+
+    const getTrackWidth = () => {
+      return track.scrollWidth / HEADLINERS_REPEAT_COUNT;
+    };
+
+    const animate = () => {
+      if (!isDraggingRef.current) {
+        xRef.current -= speedRef.current;
+        const w = getTrackWidth();
+        if (w > 0) {
+          if (xRef.current <= -w) {
+            xRef.current += w;
+          } else if (xRef.current > 0) {
+            xRef.current -= w;
+          }
+        }
+        track.style.transform = `translate3d(${xRef.current}px, 0, 0)`;
+      }
+      rafId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    const handleWheel = (e) => {
+      e.preventDefault();
+      xRef.current -= e.deltaY * 0.6;
+      const w = getTrackWidth();
+      if (w > 0) {
+        if (xRef.current <= -w) xRef.current += w;
+        else if (xRef.current > 0) xRef.current -= w;
+      }
+      track.style.transform = `translate3d(${xRef.current}px, 0, 0)`;
+    };
+
+    wrapper.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      wrapper.removeEventListener('wheel', handleWheel);
+      if (momentumTimeoutRef.current) clearTimeout(momentumTimeoutRef.current);
+    };
+  }, []);
+
+  // Pointer drag event handlers
+  const handlePointerDown = (e) => {
+    const wrapper = wrapperRef.current;
+    const track = trackRef.current;
+    if (!wrapper || !track) return;
+
+    isDraggingRef.current = true;
+    hasMovedRef.current = false;
+    wrapper.setPointerCapture(e.pointerId);
+    startXRef.current = e.clientX;
+    startScrollRef.current = xRef.current;
+    lastXRef.current = e.clientX;
+    lastTimeRef.current = performance.now();
+    velocityRef.current = 0;
+    wrapper.style.cursor = 'grabbing';
+    track.style.transition = 'none';
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDraggingRef.current) return;
+    const track = trackRef.current;
+    if (!track) return;
+
+    const dx = e.clientX - startXRef.current;
+    if (Math.abs(dx) > 6) {
+      hasMovedRef.current = true;
+    }
+
+    xRef.current = startScrollRef.current + dx;
+
+    // Seamless wrap during active drag
+    const w = track.scrollWidth / HEADLINERS_REPEAT_COUNT;
+    if (w > 0) {
+      if (xRef.current <= -w * 1.5) xRef.current += w;
+      if (xRef.current >= w * 0.5) xRef.current -= w;
+    }
+
+    track.style.transform = `translate3d(${xRef.current}px, 0, 0)`;
+
+    const now = performance.now();
+    velocityRef.current = (e.clientX - lastXRef.current) / (now - lastTimeRef.current || 16);
+    lastXRef.current = e.clientX;
+    lastTimeRef.current = now;
+  };
+
+  const handlePointerEnd = (e) => {
+    if (!isDraggingRef.current) return;
+    const wrapper = wrapperRef.current;
+    if (wrapper && wrapper.hasPointerCapture(e.pointerId)) {
+      wrapper.releasePointerCapture(e.pointerId);
+    }
+    isDraggingRef.current = false;
+    if (wrapper) wrapper.style.cursor = 'grab';
+
+    // Momentum release
+    const vel = velocityRef.current;
+    if (Math.abs(vel) > 0.1) {
+      speedRef.current = Math.max(0.3, Math.min(3, Math.abs(vel) * 2)) * Math.sign(-vel || -1);
+      if (momentumTimeoutRef.current) clearTimeout(momentumTimeoutRef.current);
+      momentumTimeoutRef.current = setTimeout(() => {
+        speedRef.current = 0.65;
+      }, 1200);
+    }
+  };
+
+  // Hover speed control
+  const handleMouseEnter = () => {
+    speedRef.current *= 0.25;
+  };
+
+  const handleMouseLeave = () => {
+    if (!isDraggingRef.current) {
+      speedRef.current = 0.65;
+    }
+  };
+
+  // Card click: only open if not dragged
+  const handleCardClick = (artist) => {
+    if (hasMovedRef.current) return;
+    setSelectedArtist(artist);
+  };
+
+  // Modal ESC key listener & body lock
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setSelectedArtist(null);
+    };
+
+    if (selectedArtist) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedArtist]);
+
+  // Repeat headliner list for smooth continuous wrap
+  const loopArtists = Array(HEADLINERS_REPEAT_COUNT).fill(HEADLINER_ARTISTS).flat();
+
+  return (
+    <section className="headliners-section" id="headliners">
+      {/* Particle Canvas */}
+      <canvas ref={canvasRef} className="headliners-particle-canvas" />
+
+      {/* Ambient Cosmic Gold/Amber Glow */}
+      <div className="headliners-glow-gold" />
+
+      {/* Main Header Container */}
+      <div className="headliners-container">
+        <div className="headliners-header-row">
+          <h2 className="headliners-title">Headliners</h2>
+        </div>
+      </div>
+
+      {/* 3D Orbit Carousel Track */}
+      <div className="headliners-orbit-stage">
+        {/* Dotted Sine Orbit SVG with traveling orb */}
+        <svg
+          className="dotted-svg"
+          viewBox="0 0 2000 320"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            id="headlinersOrbitPath"
+            ref={pathRef}
+            d="M -100 165 C 80 60, 260 270, 440 165 S 800 55, 980 165 S 1240 275, 1440 165 S 1720 45, 1940 165 S 2100 280, 2300 165"
+            fill="none"
+            stroke="white"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            strokeDasharray="2 16"
+            opacity="0.85"
+          />
+          <circle r="3.4" fill="#f4be6c" style={{ filter: 'drop-shadow(0 0 6px rgba(244, 190, 108, 0.9))' }}>
+            <animateMotion dur="22s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#headlinersOrbitPath" />
+            </animateMotion>
+          </circle>
+        </svg>
+
+        {/* Marquee Wrapper with Drag Physics */}
+        <div
+          ref={wrapperRef}
+          className="marquee-wrapper"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerEnd}
+          onPointerCancel={handlePointerEnd}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div ref={trackRef} className="marquee-track">
+            {loopArtists.map((artist, idx) => (
+              <div
+                key={`${artist.id}-${idx}`}
+                className="artist-card"
+                onClick={() => handleCardClick(artist)}
+              >
+                <img
+                  src={artist.img}
+                  alt={artist.name}
+                  loading="lazy"
+                  style={{ filter: artist.tint || 'none' }}
+                />
+                <div className="artist-card-overlay" />
+                <div className="card-meta">
+                  <span className="card-cat">{artist.cat}</span>
+                  <span className="card-name">{artist.name}</span>
+                </div>
+                <div className="card-indicator">
+                  <span className="card-indicator-dot" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Edge Fade Masks */}
+        <div className="headliners-fade-left" />
+        <div className="headliners-fade-right" />
+      </div>
+
+      {/* Bottom Continuous Marquee Ticker */}
+      <div className="headliners-ticker">
+        <div className="headliners-ticker-track">
+          <div className="headliners-ticker-item">
+            <span className="ticker-star">★ YUKTHI X'26</span>
+            <span className="ticker-sep">—</span>
+            <span>COLLEGE OF ENGINEERING PAYYANUR</span>
+            <span className="ticker-sep">—</span>
+            <span>DISTINGUISHED HEADLINERS &amp; SPEAKERS</span>
+            <span className="ticker-sep">—</span>
+            <span>13TH - 17TH OCTOBER 2026</span>
+            <span className="ticker-sep">—</span>
+            <span className="ticker-star">★ YUKTHI X'26</span>
+            <span className="ticker-sep">—</span>
+            <span>COLLEGE OF ENGINEERING PAYYANUR</span>
+            <span className="ticker-sep">—</span>
+          </div>
+          <div className="headliners-ticker-item" aria-hidden="true">
+            <span className="ticker-star">★ YUKTHI X'26</span>
+            <span className="ticker-sep">—</span>
+            <span>COLLEGE OF ENGINEERING PAYYANUR</span>
+            <span className="ticker-sep">—</span>
+            <span>DISTINGUISHED HEADLINERS &amp; SPEAKERS</span>
+            <span className="ticker-sep">—</span>
+            <span>13TH - 17TH OCTOBER 2026</span>
+            <span className="ticker-sep">—</span>
+            <span className="ticker-star">★ YUKTHI X'26</span>
+            <span className="ticker-sep">—</span>
+            <span>COLLEGE OF ENGINEERING PAYYANUR</span>
+            <span className="ticker-sep">—</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Artist Detail Modal Popup */}
+      {selectedArtist && (
+        <div className="headliners-modal-overlay">
+          <div
+            className="headliners-modal-backdrop"
+            onClick={() => setSelectedArtist(null)}
+          />
+          <div className="headliners-modal-card">
+            <button
+              className="headliners-modal-close"
+              onClick={() => setSelectedArtist(null)}
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
+            <div className="headliners-modal-media">
+              <img src={selectedArtist.img} alt={selectedArtist.name} />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)'
+                }}
+              />
+            </div>
+            <div className="headliners-modal-content">
+              <div className="headliners-modal-cat">{selectedArtist.cat}</div>
+              <h3 className="headliners-modal-name">{selectedArtist.name}</h3>
+              <p className="headliners-modal-bio">{selectedArtist.bio}</p>
+              <div className="headliners-modal-actions">
+                <button
+                  className="headliners-btn-primary"
+                  onClick={() => {
+                    if (onShowToast) {
+                      onShowToast(`Session info for ${selectedArtist.name}: 10:30 AM • Main Auditorium`);
+                    }
+                  }}
+                >
+                  View Session Info
+                </button>
+                <button
+                  className="headliners-btn-secondary"
+                  onClick={() => {
+                    if (navigator.clipboard) {
+                      navigator.clipboard.writeText(window.location.href);
+                    }
+                    if (onShowToast) {
+                      onShowToast(`Copied ${selectedArtist.name} profile link!`);
+                    }
+                  }}
+                >
+                  Share
+                </button>
+              </div>
+              <div className="headliners-modal-footer">
+                <span className="card-indicator-dot" />
+                <span>{selectedArtist.stage || 'Distinguished Headliner • Main Stage'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* =========================================================
+   11. TEMPORAL REFLECTIONS ARCHIVES (3D STACK)
+   ========================================================= */
+export const ARCHIVE_EDITIONS = [
+  {
+    id: 'autoshow',
+    badge: 'FLAGSHIP EXPO',
+    category: 'AUTOMOTIVE & SUPERCAR ARENA',
+    log: 'CETP // YUKTHI\'26\nSTAGE_AUTO',
+    title: 'AUTOSHOW',
+    titleClass: 'temporal-title-autoshow',
+    sub: 'Experience the roar of extreme horsepower, custom supercar builds, precision drift battles, and the ultimate automotive showcase at CET Payyanur.',
+    image: '/images/events/autoshow.jpg',
+    posterBadge: 'LIVE ATTRACTION',
+    accent: '#ff4d2d',
+    meta: [
+      { label: 'VENUE', value: 'CET Payyanur Campus Grounds' },
+      { label: 'SPECIAL', value: 'Supercars & Drift Exhibition' }
+    ],
+    tags: ['Supercars', 'Drift Battles', 'Custom Mods', 'Flame Show']
+  },
+  {
+    id: 'robo-display',
+    badge: 'TECH EXHIBITION',
+    category: 'ROBOTICS & AI CONCLAVE',
+    log: 'CETP // YUKTHI\'26\nEXHIBIT_ROBO',
+    title: 'ROBO DISPLAY',
+    titleClass: 'temporal-title-robo',
+    sub: 'Explore, build, and innovate beyond limits. Featuring humanoid robots, quadruped robot dogs, autonomous drones, AI systems, and student engineering innovations.',
+    image: '/images/events/robo-display.jpg',
+    posterBadge: 'FLAGSHIP TECH',
+    accent: '#00d0ff',
+    meta: [
+      { label: 'DATE', value: '14 OCT 2026' },
+      { label: 'TIME', value: '10:00 AM - 4:00 PM' },
+      { label: 'VENUE', value: 'CET Payyanur Exhibition Hall' }
+    ],
+    tags: ['Humanoid Robots', 'Robo Dog', 'Autonomous Drones', 'AI Systems']
+  },
+  {
+    id: 'isro-display',
+    badge: 'SPACE EXHIBITION',
+    category: "INDIA'S SPACE ODYSSEY",
+    log: 'CETP // YUKTHI\'26\nCOSMOS_HUB',
+    title: 'ISRO DISPLAY',
+    titleClass: 'temporal-title-isro',
+    sub: "India's space journey closer than ever. Explore launch vehicles, orbital satellites, Chandrayaan lunar mission prototypes, and interactive space science exhibits.",
+    image: '/images/events/isro-display.jpg',
+    posterBadge: 'SPACE EXPO',
+    accent: '#ff9933',
+    meta: [
+      { label: 'VENUE', value: 'CET Payyanur Exhibition Arena' },
+      { label: 'EXHIBITS', value: 'Rockets, Satellites & Chandrayaan' }
+    ],
+    tags: ['Launch Vehicles', 'Chandrayaan', 'Satellites', 'Space Tech']
+  },
+  {
+    id: 'almaram-music-band',
+    badge: 'PRO SHOW HEADLINER',
+    category: 'LIVE MUSIC & CONCERT ARENA',
+    log: 'CETP // YUKTHI\'26\nPRO_SHOW_01',
+    title: 'ALMARAM BAND',
+    titleClass: 'temporal-title-almaram',
+    sub: "Get ready Kannur! Feel the pulsating acoustic energy, soulful folk fusion, and electrifying live musical performance by Almaram Music Band at Yukthi X'26.",
+    image: '/images/events/almaram-music-band.jpg',
+    aspectRatio: '1 / 1',
+    posterBadge: 'LIVE CONCERT',
+    accent: '#ff2d55',
+    meta: [
+      { label: 'LOCATION', value: 'Kannur • CET Payyanur' },
+      { label: 'STAGE', value: 'Grand Pro-Show Arena' }
+    ],
+    tags: ['AlmaramBand', 'LiveConcert', 'IndieFusion', 'MusicalNight']
+  }
+];
+
+export function TemporalReflections({ onShowToast }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const sectionRef = useRef(null);
+  const stageInnerRef = useRef(null);
+  const cardRefs = useRef([]);
+
+  const targetRef = useRef(0);
+  const curRef = useRef(0);
+  const introRef = useRef(0);
+  const coolRef = useRef(false);
+  const mousePosRef = useRef({ mx: 0, my: 0, pmx: 0, pmy: 0 });
+  const touchStartXRef = useRef(null);
+  const touchStartYRef = useRef(null);
+  const inViewRef = useRef(true);
+
+  const lastIndex = ARCHIVE_EDITIONS.length - 1;
+
+  // 1. Navigation functions
+  const engageCooldown = useCallback(() => {
+    coolRef.current = true;
+    setTimeout(() => {
+      coolRef.current = false;
+    }, 850);
+  }, []);
+
+  const goTo = useCallback((idx) => {
+    const clamped = Math.max(0, Math.min(lastIndex, idx));
+    if (clamped !== targetRef.current) {
+      targetRef.current = clamped;
+      setActiveIndex(clamped);
+      engageCooldown();
+    }
+  }, [lastIndex, engageCooldown]);
+
+  const step = useCallback((dir) => {
+    if (coolRef.current) return;
+    const next = Math.max(0, Math.min(lastIndex, targetRef.current + dir));
+    if (next !== targetRef.current) {
+      targetRef.current = next;
+      setActiveIndex(next);
+      engageCooldown();
+    }
+  }, [lastIndex, engageCooldown]);
+
+  // 2. Depth Carousel Physics & Parallax Loop
+  useEffect(() => {
+    let animId;
+
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+    const frame = () => {
+      if (inViewRef.current) {
+        curRef.current += (targetRef.current - curRef.current) * 0.058;
+        if (Math.abs(targetRef.current - curRef.current) < 0.0004) {
+          curRef.current = targetRef.current;
+        }
+        introRef.current += (1 - introRef.current) * 0.03;
+
+        const m = mousePosRef.current;
+        m.pmx += (m.mx - m.pmx) * 0.05;
+        m.pmy += (m.my - m.pmy) * 0.05;
+
+        if (stageInnerRef.current) {
+          stageInnerRef.current.style.transform = `translate(${(m.pmx * 14).toFixed(2)}px, ${(m.pmy * 10).toFixed(2)}px)`;
+        }
+
+        const cards = cardRefs.current;
+        for (let i = 0; i < cards.length; i++) {
+          const c = cards[i];
+          if (!c) continue;
+
+          const d = i - curRef.current;
+          let s, b, o, yy;
+
+          if (d >= 0) {
+            s = 1 - Math.min(d, 3) * 0.11;
+            b = d * 8;
+            o = 1 - Math.min(d, 1) * 0.62 - Math.max(0, Math.min(d - 1, 2)) * 0.22;
+            yy = d * 30;
+          } else {
+            const p = -d;
+            s = 1 + p * 1.15;
+            b = p * 26;
+            o = Math.max(0, 1 - p * 1.2);
+            yy = -p * 46;
+          }
+
+          o = clamp(o, 0, 1) * introRef.current;
+          const ss = s * (0.93 + 0.07 * introRef.current);
+
+          c.style.transform = `translate(-50%, -50%) translateY(${yy.toFixed(2)}px) scale(${ss.toFixed(4)})`;
+          c.style.filter = b < 0.12 ? 'none' : `blur(${b.toFixed(1)}px)`;
+          c.style.opacity = o.toFixed(3);
+          c.style.zIndex = String(200 - Math.round(d * 10));
+          c.style.pointerEvents = Math.abs(d) < 0.4 ? 'auto' : 'none';
+        }
+      }
+
+      animId = requestAnimationFrame(frame);
+    };
+
+    animId = requestAnimationFrame(frame);
+
+    return () => cancelAnimationFrame(animId);
+  }, [lastIndex]);
+
+  // 3. Mouse movement parallax & Intersection Observer
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const section = sectionRef.current;
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      if (e.clientY < rect.top || e.clientY > rect.bottom) return;
+
+      mousePosRef.current.mx = (e.clientX - rect.left) / rect.width - 0.5;
+      mousePosRef.current.my = (e.clientY - rect.top) / rect.height - 0.5;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        inViewRef.current = entries[0].isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      observer.disconnect();
+    };
+  }, []);
+
+  // 4. Wheel navigation (non-blocking: passes through when at edges)
+  const handleWheel = (e) => {
+    if (e.deltaY < 0 && targetRef.current === 0) return;
+    if (e.deltaY > 0 && targetRef.current === lastIndex) return;
+
+    if (Math.abs(e.deltaY) > 24) {
+      e.preventDefault();
+      step(e.deltaY > 0 ? 1 : -1);
+    }
+  };
+
+  // 5. Touch handlers (supports both horizontal swipe and vertical flick)
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartXRef.current === null || touchStartYRef.current === null) return;
+    const dx = touchStartXRef.current - e.changedTouches[0].clientX;
+    const dy = touchStartYRef.current - e.changedTouches[0].clientY;
+
+    if (Math.abs(dx) > 32 && Math.abs(dx) > Math.abs(dy) * 0.9) {
+      step(dx > 0 ? 1 : -1);
+    } else if (Math.abs(dy) > 52) {
+      step(dy > 0 ? 1 : -1);
+    }
+    touchStartXRef.current = null;
+    touchStartYRef.current = null;
+  };
+
+  return (
+    <section
+      ref={sectionRef}
+      className="temporal-archives-section"
+      id="archives"
+      onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      aria-label="Archives Temporal Reflections"
+    >
+      {/* Ambient Cosmic Gold Nebula Glow over the Global Galaxy */}
+      <div className="temporal-glow-ambient" />
+
+      {/* Subtle Vertical Guides */}
+      <div className="temporal-vlines">
+        <i />
+        <i />
+        <i />
+      </div>
+
+      {/* Section Heading */}
+      <div className="temporal-heading">
+        <p className="temporal-phase">YUKTHI SHOWCASE&nbsp;&nbsp;//&nbsp;&nbsp;TEMPORAL REFLECTIONS</p>
+        <h2>
+          Temporal <em>Reflections.</em>
+        </h2>
+      </div>
+
+      {/* 3D Depth Card Stage */}
+      <div className="temporal-stage">
+        <div ref={stageInnerRef} className="temporal-stage-inner">
+          {ARCHIVE_EDITIONS.map((item, idx) => (
+            <article
+              key={item.id}
+              ref={(el) => (cardRefs.current[idx] = el)}
+              className="temporal-card has-poster"
+              data-i={idx}
+              onClick={() => goTo(idx)}
+            >
+              <div className="temporal-card-grid" />
+              <div className="temporal-card-glow" />
+
+              {/* Full-width Top Header spanning the card */}
+              <div className="temporal-card-top-bar">
+                <span className="temporal-card-badge-pill">{item.badge}</span>
+                <span className="temporal-card-log">{item.log}</span>
+              </div>
+
+              {/* Main Content Split */}
+              <div className="temporal-card-split">
+                <div className="temporal-card-poster-col">
+                  <div
+                    className="temporal-card-poster-ambient"
+                    style={{ backgroundImage: `url(${item.image})` }}
+                  />
+                  <div
+                    className="temporal-card-poster-wrapper"
+                    style={item.aspectRatio ? { aspectRatio: item.aspectRatio } : undefined}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="temporal-card-poster-img"
+                      loading="eager"
+                    />
+                    <div className="temporal-card-poster-overlay" />
+                    {item.posterBadge && (
+                      <span className="temporal-poster-badge">{item.posterBadge}</span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="temporal-card-info-col">
+                  <div className="temporal-card-body">
+                    <span className="temporal-card-category">{item.category}</span>
+                    <h3 className={`temporal-card-title ${item.titleClass || ''}`}>
+                      {item.title}
+                    </h3>
+                    <p className="temporal-card-sub">{item.sub}</p>
+
+                    {item.meta && (
+                      <div className="temporal-card-meta-list">
+                        {item.meta.map((m, mi) => (
+                          <div key={mi} className="temporal-meta-pill">
+                            <span className="temporal-meta-label">{m.label}:</span>
+                            <span className="temporal-meta-val">{m.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {item.tags && (
+                      <div className="temporal-card-tags">
+                        {item.tags.map((tag, ti) => (
+                          <span key={ti} className="temporal-tag-chip">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Corner crosshairs */}
+              <span className="temporal-tick temporal-tl" />
+              <span className="temporal-tick temporal-tr" />
+              <span className="temporal-tick temporal-bl" />
+              <span className="temporal-tick temporal-br" />
+            </article>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop Prev / Next Floating Navigation Arrows */}
+      <button
+        type="button"
+        className="temporal-nav-arrow prev desktop-only"
+        onClick={() => step(-1)}
+        disabled={activeIndex === 0}
+        aria-label="Previous archive edition"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        className="temporal-nav-arrow next desktop-only"
+        onClick={() => step(1)}
+        disabled={activeIndex === lastIndex}
+        aria-label="Next archive edition"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
+
+      {/* Mobile Navigation Controls Dock (prev / dots / next) */}
+      <div className="temporal-mobile-controls" aria-label="Mobile card navigation">
+        <button
+          type="button"
+          className="temporal-mobile-btn prev"
+          onClick={() => step(-1)}
+          disabled={activeIndex === 0}
+          aria-label="Previous edition"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <div className="temporal-mobile-pills">
+          {ARCHIVE_EDITIONS.map((ed, i) => (
+            <button
+              key={ed.id}
+              type="button"
+              className={`temporal-mobile-dot ${i === activeIndex ? 'active' : ''}`}
+              onClick={() => goTo(i)}
+              aria-label={`Jump to ${ed.title}`}
+            />
+          ))}
+          <span className="temporal-mobile-counter">0{activeIndex + 1}&nbsp;/&nbsp;0{ARCHIVE_EDITIONS.length}</span>
+        </div>
+
+        <button
+          type="button"
+          className="temporal-mobile-btn next"
+          onClick={() => step(1)}
+          disabled={activeIndex === lastIndex}
+          aria-label="Next edition"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Bottom Hint on Desktop */}
+      <div className="temporal-hint desktop-only">
+        <div className="temporal-mouse">
+          <span />
+        </div>
+        <p>SCROLL OR CLICK TO EXPLORE EDITIONS</p>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
+   12. 3D GALAXY COSMIC BACKGROUND SCENE
+   ========================================================= */
+function createGlowingStarTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(0.2, 'rgba(255, 245, 225, 0.9)');
+    gradient.addColorStop(0.48, 'rgba(244, 190, 108, 0.45)');
+    gradient.addColorStop(0.78, 'rgba(217, 130, 43, 0.14)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 64, 64);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+}
+
+export function GalaxyScene() {
+    const mountRef = useRef(null);
+    const constCanvasRef = useRef(null);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const mount = mountRef.current;
+        const constCanvas = constCanvasRef.current;
+        if (!mount || !constCanvas) return;
+
+        // 1. Constellation Network & Meteors Canvas
+        const getViewportWidth = () => Math.min(window.innerWidth, document.documentElement.clientWidth || window.innerWidth);
+        const getViewportHeight = () => window.innerHeight;
+
+        const constCtx = constCanvas.getContext('2d');
+        let cWidth = (constCanvas.width = getViewportWidth());
+        let cHeight = (constCanvas.height = getViewportHeight());
+
+        const nodes = Array.from({ length: 55 }, () => ({
+            x: Math.random() * getViewportWidth(),
+            y: Math.random() * getViewportHeight(),
+            vx: (Math.random() - 0.5) * 0.28,
+            vy: (Math.random() - 0.5) * 0.28,
+            radius: Math.random() * 1.5 + 0.8,
+            alpha: Math.random() * 0.5 + 0.35
+        }));
+
+        const meteors = [];
+        let nextMeteorTime = 0;
+
+        function updateAndDrawConstellations(now) {
+            constCtx.clearRect(0, 0, cWidth, cHeight);
+
+            for (let i = 0; i < nodes.length; i++) {
+                const n = nodes[i];
+                n.x += n.vx;
+                n.y += n.vy;
+
+                if (n.x < 0) n.x = cWidth;
+                else if (n.x > cWidth) n.x = 0;
+                if (n.y < 0) n.y = cHeight;
+                else if (n.y > cHeight) n.y = 0;
+
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const m = nodes[j];
+                    const dx = n.x - m.x;
+                    const dy = n.y - m.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 115) {
+                        const alpha = (1 - dist / 115) * 0.16;
+                        constCtx.strokeStyle = `rgba(200, 225, 255, ${alpha})`;
+                        constCtx.lineWidth = 0.75;
+                        constCtx.beginPath();
+                        constCtx.moveTo(n.x, n.y);
+                        constCtx.lineTo(m.x, m.y);
+                        constCtx.stroke();
+                    }
+                }
+
+                constCtx.fillStyle = `rgba(255, 250, 235, ${n.alpha})`;
+                constCtx.beginPath();
+                constCtx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+                constCtx.fill();
+            }
+
+            if (now > nextMeteorTime) {
+                const angle = (Math.PI / 180) * (32 + Math.random() * 10);
+                const speed = 4.5 + Math.random() * 4;
+                meteors.push({
+                    x: Math.random() * cWidth * 1.2 - cWidth * 0.1,
+                    y: Math.random() * cHeight * 0.5,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    length: 45 + Math.random() * 35,
+                    alpha: 0.85,
+                    life: 0,
+                    maxLife: 60 + Math.random() * 30
+                });
+                nextMeteorTime = now + 4000 + Math.random() * 4500;
+            }
+
+            for (let i = meteors.length - 1; i >= 0; i--) {
+                const met = meteors[i];
+                met.x += met.vx;
+                met.y += met.vy;
+                met.life++;
+                met.alpha = 1 - met.life / met.maxLife;
+
+                if (met.life >= met.maxLife || met.y > cHeight + 100) {
+                    meteors.splice(i, 1);
+                    continue;
+                }
+
+                const tailX = met.x - (met.vx / 5) * met.length;
+                const tailY = met.y - (met.vy / 5) * met.length;
+
+                const grad = constCtx.createLinearGradient(tailX, tailY, met.x, met.y);
+                grad.addColorStop(0, 'rgba(100, 180, 255, 0)');
+                grad.addColorStop(1, `rgba(160, 220, 255, ${met.alpha * 0.85})`);
+
+                constCtx.strokeStyle = grad;
+                constCtx.lineWidth = 1.4;
+                constCtx.beginPath();
+                constCtx.moveTo(tailX, tailY);
+                constCtx.lineTo(met.x, met.y);
+                constCtx.stroke();
+            }
+        }
+
+        // 2. Three.js Scene, Fixed Perspective Camera, and Renderer
+        const scene = new THREE.Scene();
+        const initWidth = getViewportWidth();
+        const initHeight = getViewportHeight();
+        const camera = new THREE.PerspectiveCamera(65, initWidth / initHeight, 0.1, 100);
+        camera.position.set(0, 2.7, 5.8);
+        camera.lookAt(0, -0.32, 0);
+
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance'
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(initWidth, initHeight);
+        renderer.setClearColor(0x000000, 0);
+        mount.appendChild(renderer.domElement);
+
+        // 3. Galaxy Particle Geometry & Color Grading (85,000 stars)
+        const params = {
+            count: 85000,
+            size: 0.022,
+            radius: 5.8,
+            branches: 3,
+            spin: 1.45,
+            randomness: 0.22,
+            randomnessPower: 3.2,
+            colorCore: '#ffffff',
+            colorInner: '#ffeed6',
+            colorGold: '#f4be6c',
+            colorBronze: '#d9822b',
+            colorDust: '#8b4d1b',
+            colorHalo: '#48cae4',
+            rotationSpeed: 0.075
+        };
+
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(params.count * 3);
+        const colors = new Float32Array(params.count * 3);
+
+        const cCore = new THREE.Color(params.colorCore);
+        const cInner = new THREE.Color(params.colorInner);
+        const cGold = new THREE.Color(params.colorGold);
+        const cBronze = new THREE.Color(params.colorBronze);
+        const cDust = new THREE.Color(params.colorDust);
+        const cHalo = new THREE.Color(params.colorHalo);
+
+        for (let i = 0; i < params.count; i++) {
+            const i3 = i * 3;
+            const radius = Math.random() * params.radius;
+            const spinAngle = radius * params.spin;
+            const branchAngle = ((i % params.branches) / params.branches) * Math.PI * 2;
+
+            const randomX = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius;
+            const randomY = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius;
+            const randomZ = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * radius;
+
+            positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
+            positions[i3 + 1] = randomY * 0.42;
+            positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+
+            const ratio = radius / params.radius;
+            const mixedColor = new THREE.Color();
+
+            if (ratio < 0.18) {
+                mixedColor.copy(cCore).lerp(cInner, ratio / 0.18);
+            } else if (ratio < 0.55) {
+                mixedColor.copy(cInner).lerp(cGold, (ratio - 0.18) / 0.37);
+            } else if (ratio < 0.85) {
+                mixedColor.copy(cGold).lerp(cBronze, (ratio - 0.55) / 0.3);
+            } else {
+                mixedColor.copy(cBronze).lerp(cDust, (ratio - 0.85) / 0.15);
+            }
+
+            if (Math.random() < 0.07 && ratio > 0.35) {
+                mixedColor.lerp(cHalo, 0.65);
+            }
+            if (ratio < 0.12 && Math.random() < 0.4) {
+                mixedColor.set('#ffffff');
+            }
+
+            colors[i3] = mixedColor.r;
+            colors[i3 + 1] = mixedColor.g;
+            colors[i3 + 2] = mixedColor.b;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const starTexture = createGlowingStarTexture();
+        const material = new THREE.PointsMaterial({
+            size: params.size,
+            sizeAttenuation: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            vertexColors: true,
+            map: starTexture,
+            transparent: true,
+            opacity: 0.95
+        });
+
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // 3b. Deep Space Ambient Starfield (20,000 stars across all sections)
+        const ambientCount = 20000;
+        const ambientGeo = new THREE.BufferGeometry();
+        const ambientPos = new Float32Array(ambientCount * 3);
+        const ambientCol = new Float32Array(ambientCount * 3);
+
+        const goldTint = new THREE.Color('#f4be6c');
+        const blueTint = new THREE.Color('#93c5fd');
+        const whiteTint = new THREE.Color('#ffffff');
+
+        for (let i = 0; i < ambientCount; i++) {
+            const i3 = i * 3;
+            ambientPos[i3] = (Math.random() - 0.5) * 45;
+            ambientPos[i3 + 1] = (Math.random() - 0.5) * 35;
+            ambientPos[i3 + 2] = (Math.random() - 0.5) * 35;
+
+            const rand = Math.random();
+            const starCol = rand < 0.5 ? whiteTint : rand < 0.8 ? goldTint : blueTint;
+            ambientCol[i3] = starCol.r;
+            ambientCol[i3 + 1] = starCol.g;
+            ambientCol[i3 + 2] = starCol.b;
+        }
+
+        ambientGeo.setAttribute('position', new THREE.BufferAttribute(ambientPos, 3));
+        ambientGeo.setAttribute('color', new THREE.BufferAttribute(ambientCol, 3));
+
+        const ambientMat = new THREE.PointsMaterial({
+            size: 0.024,
+            sizeAttenuation: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            vertexColors: true,
+            map: starTexture,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const ambientStars = new THREE.Points(ambientGeo, ambientMat);
+        scene.add(ambientStars);
+
+        // 4. Scroll Tracking for Smooth Parallax
+        let targetScrollY = window.scrollY;
+        let currentScrollY = window.scrollY;
+
+        const handleScroll = () => {
+            targetScrollY = window.scrollY;
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // 5. Animation Loop
+        const timer = new THREE.Timer();
+        let animationFrameId;
+
+        function animate() {
+            animationFrameId = requestAnimationFrame(animate);
+
+            timer.update();
+            const elapsedTime = timer.getElapsed();
+            const now = performance.now();
+
+            currentScrollY += (targetScrollY - currentScrollY) * 0.06;
+
+            updateAndDrawConstellations(now);
+
+            const scrollParallax = Math.min(currentScrollY, 3200);
+            camera.position.y = 2.7 - scrollParallax * 0.00045;
+            camera.position.z = 5.8 + scrollParallax * 0.0002;
+            camera.lookAt(0, -0.32 - scrollParallax * 0.00045, 0);
+
+            points.rotation.y = elapsedTime * params.rotationSpeed + currentScrollY * 0.00032;
+            points.rotation.x = Math.sin(elapsedTime * 0.15) * 0.04 + currentScrollY * 0.00008;
+
+            ambientStars.rotation.y = elapsedTime * 0.012 + currentScrollY * 0.00015;
+            ambientStars.rotation.x = Math.cos(elapsedTime * 0.1) * 0.02;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // 6. Window Resize Handler
+        function handleResize() {
+            const newW = getViewportWidth();
+            const newH = getViewportHeight();
+            cWidth = constCanvas.width = newW;
+            cHeight = constCanvas.height = newH;
+
+            camera.aspect = newW / newH;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(newW, newH);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        }
+        window.addEventListener('resize', handleResize);
+
+        // 7. Cleanup on Unmount
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('scroll', handleScroll);
+
+            if (mount && renderer.domElement && renderer.domElement.parentNode === mount) {
+                mount.removeChild(renderer.domElement);
+            }
+
+            geometry.dispose();
+            material.dispose();
+            ambientGeo.dispose();
+            ambientMat.dispose();
+            starTexture.dispose();
+            renderer.dispose();
+        };
+
+    }, []);
+
+    return (
+        <div className="galaxy-container">
+            <div className="cosmic-viewport">
+                <div className="milky-way-layer" />
+                <div className="tathva-nebula-glow" />
+                <canvas ref={constCanvasRef} className="constellation-canvas" />
+                <div className="vignette-overlay" />
+            </div>
+            <div ref={mountRef} className="webgl-mount" />
+        </div>
+    );
+}
+
+/* =========================================================
+   13. MAIN YUKTHI X CONSOLIDATED COMPONENT
    ========================================================= */
 export default function YukthiX({
     includeHeader = true,
@@ -1160,6 +2485,8 @@ export default function YukthiX({
 
     return (
         <div className="yukthix-portal-view">
+            {/* Self-contained 3D Galaxy Cosmic Background */}
+            <GalaxyScene />
             <Head>
                 <title>YUKTHI X'26 | National Techno-Management Fest</title>
                 <meta
